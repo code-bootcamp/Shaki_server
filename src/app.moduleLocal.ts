@@ -7,12 +7,14 @@ import { RedisClientOptions } from 'redis';
 import * as redisStore from 'cache-manager-redis-store';
 import { HttpsModule } from './apis/https/https.module';
 import { AuthModule } from './apis/auth/auth.module';
+import { BranchModule } from './apis/branch/branch.module';
 
 @Module({
   imports: [
     TestModule,
     HttpsModule,
     AuthModule,
+    BranchModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: 'src/commons/graphql/schema.gql',

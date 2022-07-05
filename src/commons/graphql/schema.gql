@@ -8,8 +8,20 @@ type Test {
   unit: String!
 }
 
+type Branch {
+  id: String!
+  name: String!
+  address: String!
+  price: Int!
+  people: Int!
+  description: String!
+  tags: String!
+  star: Int!
+}
+
 type Query {
   fetchTest: [Test!]!
+  fetchBranchs: [Branch!]!
 }
 
 type Mutation {
@@ -17,9 +29,19 @@ type Mutation {
   redisTest: String!
   getAccessToken: String!
   getRefreshToken: String!
+  createBranch(createBarnch: CreateBranchInput!): Boolean!
 }
 
 input CreateTestInput {
   name: String!
   unit: String!
+}
+
+input CreateBranchInput {
+  name: String!
+  address: String!
+  price: Int!
+  people: Int!
+  description: String!
+  tags: String!
 }
