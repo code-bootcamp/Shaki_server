@@ -15,40 +15,40 @@ export class BranchService {
     private readonly tagsRepository: Repository<Tags>,
 
     @InjectRepository(Images)
-    private readonly imagesRepository: Repository<Images>
+    private readonly imagesRepository: Repository<Images>,
   ) {}
 
   async find() {
-    return await this.branchRepository.find({})
+    return await this.branchRepository.find({
+      relations: ['images', 'tags'],
+    });
   }
 
   async create({ createBranchInput }) {
-
-   
     const { tags, images, ...items } = createBranchInput;
 
     const branchResult = await this.branchRepository.save({
       ...items,
-    })
+    });
 
     let tagsResult = [];
-    tags.forEach(async el => {
+    tags.forEach(async (el) => {
       const tag = await this.tagsRepository.save({
         branch: branchResult.id,
-        tag: el
-      })
-      tagsResult.push(tag)
-    })
+        tag: el,
+      });
+      tagsResult.push(tag);
+    });
 
     let imagesResult = [];
-    images.forEach(async el => {
+    images.forEach(async (el) => {
       const url = await this.imagesRepository.save({
         branch: branchResult.id,
-        url: el
-      })
-      imagesResult.push(url)
-    })
+        url: el,
+      });
+      imagesResult.push(url);
+    });
 
-    return true
+    return true;
   }
 }
