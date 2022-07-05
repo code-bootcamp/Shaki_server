@@ -5,6 +5,7 @@ import { CurrentUser } from 'src/commons/auth/gql-user.param';
 import { CreateUserInput } from './dto/createUser.input';
 import { User } from './entities/user.entity';
 import { UserService } from './user.service';
+import * as bcrypt from 'bcrypt';
 
 @Resolver()
 export class UserResolver {
@@ -16,6 +17,7 @@ export class UserResolver {
   async createUser(
     @Args('createUserInput') createUserInput: CreateUserInput, //
   ) {
+    const;
     const { ...userInfo } = createUserInput;
     return this.userService.create({ ...userInfo });
   }
