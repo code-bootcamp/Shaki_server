@@ -11,12 +11,14 @@ type Test {
 type Branch {
   id: String!
   name: String!
-  address: String!
   price: Int!
-  people: Int!
-  description: String!
-  tags: String!
+  contents: String!
   star: Int!
+  zipcode: String!
+  address: String!
+  conaddressDetail: String!
+  lat: Float!
+  lng: Float!
 }
 
 type Query {
@@ -29,7 +31,7 @@ type Mutation {
   redisTest: String!
   getAccessToken: String!
   getRefreshToken: String!
-  createBranch(createBarnch: CreateBranchInput!): Boolean!
+  createUseditem(createUseditemInput: CreateBranchInput!): Branch!
 }
 
 input CreateTestInput {
@@ -39,9 +41,13 @@ input CreateTestInput {
 
 input CreateBranchInput {
   name: String!
-  address: String!
   price: Int!
-  people: Int!
-  description: String!
-  tags: String!
+  contents: String!
+  images: [String!]!
+  tags: [String!]!
+  zipcode: String!
+  address: String!
+  conaddressDetail: String!
+  lat: Float!
+  lng: Float!
 }

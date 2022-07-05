@@ -1,11 +1,14 @@
-import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { Field, Int, ObjectType, Float } from '@nestjs/graphql';
 import {
   Column,
+  ManyToOne,
   DeleteDateColumn,
   Entity,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Images } from './images.entity';
+import { Tags } from './tags.entity';
 
 @Entity()
 @ObjectType()
@@ -19,28 +22,36 @@ export class Branch {
   name: string;
 
   @Column()
-  @Field(() => String)
-  address: string;
-
-  @Column()
   @Field(() => Int)
   price: number;
 
   @Column()
-  @Field(() => Int)
-  people: number;
-
-  @Column()
   @Field(() => String)
-  description: string;
-
-  @Column()
-  @Field(() => String)
-  tags: string;
+  contents: string;
 
   @Column({default: 0})
   @Field(() => Int)
   star: number;
+
+  @Column()
+  @Field(() => String)
+  zipcode: string;
+  
+  @Column()
+  @Field(() => String)
+  address: string;
+
+  @Column()
+  @Field(() => String)
+  conaddressDetail: string;
+
+  @Column()
+  @Field(() => Float)
+  lat: number;
+
+  @Column()
+  @Field(() => Float)
+  lng: number;
 
   @UpdateDateColumn()
   updatedAt: Date;
