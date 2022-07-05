@@ -59,7 +59,11 @@ export class Branch {
   @DeleteDateColumn()
   deletedAt: Date;
 
-  @OneToMany(() => Images, (image) => image.branch)
+  @OneToMany(() => Images, (images) => images.branch)
   @Field(() => [Images])
-  image: Images[];
+  images: Images[];
+
+  @OneToMany(() => Tags, (tags) => tags.branch)
+  @Field(() => [Tags])
+  tags: Tags[];
 }
