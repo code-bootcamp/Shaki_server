@@ -1,11 +1,11 @@
 import { Field, Int, ObjectType, Float } from '@nestjs/graphql';
 import {
   Column,
-  ManyToOne,
   DeleteDateColumn,
   Entity,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
 import { Images } from './images.entity';
 import { Tags } from './tags.entity';
@@ -29,14 +29,14 @@ export class Branch {
   @Field(() => String)
   contents: string;
 
-  @Column({default: 0})
+  @Column({ default: 0 })
   @Field(() => Int)
   star: number;
 
   @Column()
   @Field(() => String)
   zipcode: string;
-  
+
   @Column()
   @Field(() => String)
   address: string;
@@ -45,11 +45,11 @@ export class Branch {
   @Field(() => String)
   conaddressDetail: string;
 
-  @Column({type: 'decimal', precision: 9, scale: 7})
+  @Column({ type: 'decimal', precision: 9, scale: 7 })
   @Field(() => Float)
   lat: number;
 
-  @Column({type: 'decimal', precision: 10, scale: 7})
+  @Column({ type: 'decimal', precision: 10, scale: 7 })
   @Field(() => Float)
   lng: number;
 
@@ -58,4 +58,8 @@ export class Branch {
 
   @DeleteDateColumn()
   deletedAt: Date;
+
+  @OneToMany(() => Images, (image) => image.branch)
+  @Field(() => [Images])
+  image: Images[];
 }
