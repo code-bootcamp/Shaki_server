@@ -9,10 +9,11 @@ export class UserService {
     @InjectRepository(User) private readonly userRepository: Repository<User>, //
   ) {}
 
-  async create({ ...userInfo }) {
+  async create({ hashedPwd: pwd, ...userInfo }) {
     const { ...info } = userInfo;
     const result = await this.userRepository.save({
       ...info,
+      pwd,
     });
     return result;
   }
