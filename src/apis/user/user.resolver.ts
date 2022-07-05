@@ -17,9 +17,9 @@ export class UserResolver {
   async createUser(
     @Args('createUserInput') createUserInput: CreateUserInput, //
   ) {
-    const;
-    const { ...userInfo } = createUserInput;
-    return this.userService.create({ ...userInfo });
+    const { pwd, ...userInfo } = createUserInput;
+    const hashedPwd = await bcrypt.hash(pwd, 10);
+    return this.userService.create({ hashedPwd, ...userInfo });
   }
 
   @UseGuards(GqlAuthAccessGuard)
