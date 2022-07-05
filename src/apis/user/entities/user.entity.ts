@@ -14,7 +14,7 @@ export class User {
 
   @Column()
   @Field(() => String)
-  id: String;
+  nickname: String;
 
   @Column()
   @Field(() => String)
