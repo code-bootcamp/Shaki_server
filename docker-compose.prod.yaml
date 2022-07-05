@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   shaki-backend:
-    image: asia.gcr.io/shaki-355105/shaki-registry:25
+    image: asia.gcr.io/shaki-355105/shaki-registry:26
     build:
       context: .
       dockerfile: Dockerfile.prod
