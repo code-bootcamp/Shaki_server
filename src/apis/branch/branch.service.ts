@@ -22,15 +22,19 @@ export class BranchService {
     return await this.branchRepository.find({})
   }
 
-  async create({ createUseditemInput }) {
+  async create({ createBranchInput }) {
 
    
-    const { tags, images, ...items } = createUseditemInput;
+    const { tags, images, ...items } = createBranchInput;
 
-    console.log(images)
+    const branchResult = await this.branchRepository.save({
+      ...items,
+    })
+
     let tagsResult = [];
     tags.forEach(async el => {
       const tag = await this.tagsRepository.save({
+        branch: branchResult.id,
         tag: el
       })
       tagsResult.push(tag)
@@ -39,16 +43,12 @@ export class BranchService {
     let imagesResult = [];
     images.forEach(async el => {
       const url = await this.imagesRepository.save({
+        branch: branchResult.id,
         url: el
       })
       imagesResult.push(url)
     })
 
-    
-    return await this.branchRepository.save({
-      image: imagesResult,
-      tag: tagsResult,
-      ...items,
-    })
+    return true
   }
 }

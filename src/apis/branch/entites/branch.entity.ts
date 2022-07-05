@@ -45,11 +45,11 @@ export class Branch {
   @Field(() => String)
   conaddressDetail: string;
 
-  @Column()
+  @Column({type: 'decimal', precision: 9, scale: 7})
   @Field(() => Float)
   lat: number;
 
-  @Column()
+  @Column({type: 'decimal', precision: 10, scale: 7})
   @Field(() => Float)
   lng: number;
 

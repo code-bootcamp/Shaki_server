@@ -14,10 +14,11 @@ export class BranchResolver {
     return await this.branchService.find()
   }
 
-  @Mutation(() => Branch)
-  async createUseditem(
-    @Args('createUseditemInput') createUseditemInput: CreateBranchInput //
+  @Mutation(() => Boolean)
+  async createBranch(
+    @Args('createBranch') createBranchInput: CreateBranchInput //
   ) {
-    return await this.branchService.create({ createUseditemInput })
+    const result = await this.branchService.create({ createBranchInput })
+    if(result) return true
   }
 }

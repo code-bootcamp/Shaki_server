@@ -8,6 +8,15 @@ type Test {
   unit: String!
 }
 
+type User {
+  user_id: String!
+  name: String!
+  id: String!
+  pwd: String!
+  phone_num: String!
+  email: String!
+}
+
 type Branch {
   id: String!
   name: String!
@@ -23,6 +32,8 @@ type Branch {
 
 type Query {
   fetchTest: [Test!]!
+  fetchLoginUser: String!
+  fetchLoginEmail(emial: String!): String!
   fetchBranchs: [Branch!]!
 }
 
@@ -31,12 +42,21 @@ type Mutation {
   redisTest: String!
   getAccessToken: String!
   getRefreshToken: String!
-  createUseditem(createUseditemInput: CreateBranchInput!): Branch!
+  createUser(createUserInput: CreateUserInput!): User!
+  createBranch(createBranch: CreateBranchInput!): Boolean!
 }
 
 input CreateTestInput {
   name: String!
   unit: String!
+}
+
+input CreateUserInput {
+  name: String!
+  id: String!
+  pwd: String!
+  phone_num: String!
+  email: String!
 }
 
 input CreateBranchInput {
