@@ -6,14 +6,16 @@ import { TestModule } from './apis/test/test.module';
 import { RedisClientOptions } from 'redis';
 import * as redisStore from 'cache-manager-redis-store';
 import { HttpsModule } from './apis/https/https.module';
-import { AuthModule } from './apis/auth/auth.module';
+import { UserModule } from './apis/user/user.module';
 import { BranchModule } from './apis/branch/branch.module';
+import { AuthModule } from './apis/auth/auth.module';
 
 @Module({
   imports: [
     TestModule,
     HttpsModule,
     AuthModule,
+    UserModule,
     BranchModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,

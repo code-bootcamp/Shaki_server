@@ -16,10 +16,9 @@ export class BranchResolver {
 
   @Mutation(() => Boolean)
   async createBranch(
-    @Args('createBarnch') createBranchInput: CreateBranchInput //
+    @Args('createBranch') createBranchInput: CreateBranchInput //
   ) {
-    await this.branchService.create({ createBranchInput })
-
-    return true;
+    const result = await this.branchService.create({ createBranchInput })
+    if(result) return true
   }
 }
