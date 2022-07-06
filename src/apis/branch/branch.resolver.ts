@@ -6,19 +6,19 @@ import { Branch } from './entites/branch.entity';
 @Resolver()
 export class BranchResolver {
   constructor(
-    private readonly branchService: BranchService //
+    private readonly branchService: BranchService, //
   ) {}
 
   @Query(() => [Branch])
-  async fetchBranchs() {
-    return await this.branchService.find()
+  async fetchBranches() {
+    return await this.branchService.find();
   }
 
   @Mutation(() => Boolean)
   async createBranch(
-    @Args('createBranch') createBranchInput: CreateBranchInput //
+    @Args('createBranch') createBranchInput: CreateBranchInput, //
   ) {
-    const result = await this.branchService.create({ createBranchInput })
-    if(result) return true
+    const result = await this.branchService.create({ createBranchInput });
+    if (result) return true;
   }
 }
