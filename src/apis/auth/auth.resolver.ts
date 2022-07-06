@@ -6,7 +6,10 @@ import {
   UnprocessableEntityException,
   UseGuards,
 } from '@nestjs/common';
-import { GqlAuthRefreshGuard } from 'src/commons/auth/gql-auth.guard';
+import {
+  GqlAuthAccessGuard,
+  GqlAuthRefreshGuard,
+} from 'src/commons/auth/gql-auth.guard';
 import { CurrentUser, ICurrentUser } from 'src/commons/auth/gql-user.param';
 import { UserService } from '../user/user.service';
 import * as bcrypt from 'bcrypt';
@@ -19,19 +22,10 @@ export class AuthResolver {
   ) {}
 
   @Mutation(() => String)
-  getAccessToken() {
-    return this.authService.getAccessToken();
-  }
-
-  @Mutation(() => String)
-  getRefreshToken() {
-    return this.authService.getRefreshToKen();
-  }
-
-  @Mutation(() => String)
   async login(
     @Args('email') email: string, //
     @Args('pwd') pwd: string,
+    @Context() context: any,
   ) {
     const user = await this.userService.findOne({ email });
 
@@ -40,19 +34,14 @@ export class AuthResolver {
     const isAuth = await bcrypt.compare(pwd, user.pwd);
     if (!isAuth) throw new UnprocessableEntityException('암호가 틀렸습니다.');
 
-    return this.authService.getAccessToken();
+    this.authService.getRefreshToKen({ user, res: context.req.res });
+
+    return this.authService.getAccessToken({ user });
   }
 
+  @UseGuards(GqlAuthRefreshGuard)
   @Mutation(() => String)
-  logout(@Context() context: any) {
-    const accessToken = context.req.headers.authorization.replace(
-      'Bearer ',
-      '',
-    );
-    try {
-      jwt.verify(accessToken, 'accesskey');
-    } catch {
-      throw new UnauthorizedException();
-    }
+  restoreAccessToken(@CurrentUser() currentUser: any) {
+    return this.authService.getAccessToken({ user: currentUser });
   }
 }
