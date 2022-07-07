@@ -7,19 +7,18 @@ export class AuthService {
     private readonly jwtService: JwtService, //
   ) {}
 
-  getAccessToken() {
-    const accessToken = this.jwtService.sign(
-      { email: 'aaa', sub: 'bbb' },
+  getAccessToken({ user }) {
+    return this.jwtService.sign(
+      { email: user.email, sub: user.id },
       { secret: 'accesskey', expiresIn: '1h' },
     );
-    return accessToken;
   }
 
-  getRefreshToKen({}) {
+  getRefreshToKen({ user, res }) {
     const refreshToken = this.jwtService.sign(
-      { email: 'aaa', sub: 'bbb' },
+      { email: user.email, sub: user.id },
       { secret: 'refreshkey', expiresIn: '2w' },
     );
-    return refreshToken;
+    res.setHeader('Set-Cookie', `refreshToken=${refreshToken}; path=/;`);
   }
 }

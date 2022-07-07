@@ -33,6 +33,6 @@ export class UserResolver {
   @UseGuards(GqlAuthAccessGuard)
   @Query(() => String)
   async fetchLoginEmail(@Args('emial') email: string) {
-    return await this.userService.findEmail({ email });
+    return await this.userService.findOne({ email });
   }
 }
