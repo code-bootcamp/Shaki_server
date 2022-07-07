@@ -35,15 +35,31 @@ export class TestService {
   }
 
   async elasticSearchTest({ name }) {
-    const searchResult = await this.elasticsearchService.search({
+    await this.elasticsearchService.create({
+      id: 'myid9',
       index: 'test',
-      query: {
-        match: { name },
+      document: {
+        name,
+        value: '안녕하세요',
       },
     });
 
-    const result = searchResult.hits.hits.map((el) => el._source['name']);
-    return result;
+    const searchResult = await this.elasticsearchService.search({
+      index: 'test',
+      query: {
+        match: {
+          name: '이성준',
+        },
+      },
+    });
+
+    const result = searchResult.hits.hits;
+    console.log(result);
+
+    // console.log('asdasdsad');
+    // const result = searchResult.hits.hits.map((el) => el._source['name']);
+    // console.log(result);
+    // return result;
     // const result = await this.webtoonRepository.findByIds(resultId);
   }
 }
