@@ -16,11 +16,11 @@ export class User {
   @Field(() => String)
   nickname: String;
 
-  @Column()
+  @Column({ nullable: true })
   @Field(() => String)
   pwd: string;
 
-  @Column()
+  @Column({ nullable: true })
   @Field(() => String)
   phone_num: String;
 

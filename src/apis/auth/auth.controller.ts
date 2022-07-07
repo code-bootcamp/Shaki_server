@@ -2,12 +2,10 @@ import { Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Request, Response } from 'express';
 import { User } from '../user/entities/user.entity';
-import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';
-import * as bcrypt from 'bcrypt';
 
 interface IQAuthUser {
-  user: Pick<User, 'email' | 'name' | 'pwd' | 'phone_num' | 'nickname'>;
+  user: Pick<User, 'email' | 'name' | 'nickname'>;
 }
 
 @Controller()

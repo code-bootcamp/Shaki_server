@@ -12,8 +12,12 @@ export class JwtNaverStrategy extends PassportStrategy(Strategy, 'naver') {
   }
 
   validate(_, __, profile) {
+    const nickname = profile.emails[0].value.split('@')[0];
     return {
       email: profile.emails[0].value,
+      name: profile.displayName,
+      // pwd: '1234',
+      nickname,
     };
   }
 }

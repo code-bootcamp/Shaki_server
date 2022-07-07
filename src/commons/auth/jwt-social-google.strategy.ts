@@ -13,8 +13,12 @@ export class JwtGoogleStrategy extends PassportStrategy(Strategy, 'google') {
   }
 
   validate(_, __, profile) {
+    const nickname = profile.emails[0].value.split('@')[0];
     return {
       email: profile.emails[0].value,
+      name: profile.displayName,
+      // pwd: profile.id,
+      nickname,
     };
   }
 }
