@@ -11,12 +11,9 @@ export class JwtNaverStrategy extends PassportStrategy(Strategy, 'naver') {
     });
   }
 
-  validate(accessToken, refreshToken, profile) {
+  validate(_, __, profile) {
     return {
       email: profile.emails[0].value,
-      pwd: '1234',
-      name: profile.displayName,
-      phone_num: '01025182688',
     };
   }
 }

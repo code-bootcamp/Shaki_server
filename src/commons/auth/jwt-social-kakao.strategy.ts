@@ -11,12 +11,9 @@ export class JwtKaKaoStrategy extends PassportStrategy(Strategy, 'kakao') {
     });
   }
 
-  validate(accessToken, refreshToken, profile) {
+  validate(_, __, profile) {
     return {
       email: profile._json.kakao_account.email,
-      pwd: '1234',
-      name: profile.displayName,
-      phone_num: '01025182688',
     };
   }
 }

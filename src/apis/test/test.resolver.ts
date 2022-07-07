@@ -15,12 +15,12 @@ export class TestResolver {
     return await this.testService.find();
   }
 
-  // @Query(() => [String])
-  // async elasticSearchTest(
-  //   @Args('name') name: string, //
-  // ) {
-  //   return await this.testService.elasticSearchTest({ name });
-  // }
+  @Query(() => [String])
+  async elasticSearchTest(
+    @Args('name') name: string, //
+  ) {
+    return await this.testService.elasticSearchTest({ name });
+  }
 
   @Mutation(() => Test)
   async createTest(@Args('createTest') createTestInput: CreateTestInput) {
