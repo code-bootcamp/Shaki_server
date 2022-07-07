@@ -1,15 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Branch } from './entites/branch.entity';
-import { Images } from './entites/images.entity';
-import { Tags } from './entites/tags.entity';
+import { Room } from './entities/room.entity';
+import { Images } from './entities/images.entity';
+import { Tags } from './entities/tags.entity';
 
 @Injectable()
-export class BranchService {
+export class RoomService {
   constructor(
-    @InjectRepository(Branch)
-    private readonly branchRepository: Repository<Branch>,
+    @InjectRepository(Room)
+    private readonly roomRepository: Repository<Room>,
 
     @InjectRepository(Tags)
     private readonly tagsRepository: Repository<Tags>,
@@ -19,15 +19,22 @@ export class BranchService {
   ) {}
 
   async find() {
-    return await this.branchRepository.find({
+    return await this.roomRepository.find({
       relations: ['images', 'tags'],
     });
   }
 
-  async create({ createBranchInput }) {
-    const { tags, images, ...items } = createBranchInput;
+  async findOne({ id }) {
+    return await this.roomRepository.findOne({
+      where: { id },
+      relations: ['images', 'tags'],
+    });
+  }
 
-    const branchResult = await this.branchRepository.save({
+  async create({ createRoomInput }) {
+    const { tags, images, ...items } = createRoomInput;
+
+    const branchResult = await this.roomRepository.save({
       ...items,
     });
 

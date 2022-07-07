@@ -1,7 +1,7 @@
 import { Field, InputType, Int, Float } from '@nestjs/graphql';
 
 @InputType()
-export class CreateBranchInput {
+export class CreateRoomInput {
   @Field(() => String)
   name: string;
 
@@ -19,7 +19,7 @@ export class CreateBranchInput {
 
   @Field(() => String)
   zipcode: string;
-  
+
   @Field(() => String)
   address: string;
 

@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-
+import * as nodemailer from 'nodemailer';
+import 'dotenv/config';
 @Injectable()
 export class AuthService {
   constructor(
@@ -20,5 +21,31 @@ export class AuthService {
       { secret: 'refreshkey', expiresIn: '2w' },
     );
     res.setHeader('Set-Cookie', `refreshToken=${refreshToken}; path=/;`);
+  }
+
+  async sendEmail({ email }) {
+    const EMAIL_USER = process.env.EMAIL_USER;
+    const EMAIL_PASS = process.env.EMAIL_PASS;
+    const EMAIL_SENDER = process.env.EMAIL_SENDER;
+
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: EMAIL_USER,
+        pass: EMAIL_PASS,
+      },
+    });
+
+    const token = this.getAuthNum();
+    const result = await transporter.sendMail({
+      from: EMAIL_SENDER,
+      to: email,
+      subject: 'Shaki 인증번호',
+      html: token,
+    });
+  }
+
+  getAuthNum() {
+    return String(Math.floor(Math.random() * 10 ** 6)).padStart(6, '0');
   }
 }

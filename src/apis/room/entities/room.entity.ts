@@ -12,7 +12,7 @@ import { Tags } from './tags.entity';
 
 @Entity()
 @ObjectType()
-export class Branch {
+export class Room {
   @PrimaryGeneratedColumn('uuid')
   @Field(() => String)
   id: number;
