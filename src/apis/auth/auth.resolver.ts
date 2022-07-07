@@ -44,4 +44,10 @@ export class AuthResolver {
   restoreAccessToken(@CurrentUser() currentUser: any) {
     return this.authService.getAccessToken({ user: currentUser });
   }
+
+  @Mutation(() => String)
+  async checkEmail(@Args('email') email: string) {
+    await this.authService.sendEmail({ email });
+    return '성공';
+  }
 }
