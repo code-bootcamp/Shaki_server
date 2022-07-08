@@ -22,6 +22,14 @@ export class Room {
   @Field(() => String)
   branch: string;
 
+  @Column({ default: 0 })
+  @Field(() => Int)
+  usedPeople: number;
+
+  @Column({ default: 0 })
+  @Field(() => Int)
+  starAmount: number;
+
   @Column()
   @Field(() => String)
   name: string;
@@ -31,11 +39,15 @@ export class Room {
   price: number;
 
   @Column()
+  @Field(() => Int)
+  maxPeople: number;
+
+  @Column()
   @Field(() => String)
   contents: string;
 
-  @Column({ default: 0 })
-  @Field(() => Int)
+  @Column({ default: 0, type: 'decimal', precision: 2, scale: 1 })
+  @Field(() => Float)
   star: number;
 
   @Column()

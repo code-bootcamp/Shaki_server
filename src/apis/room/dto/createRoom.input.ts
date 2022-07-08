@@ -14,6 +14,9 @@ export class CreateRoomInput {
   @Field(() => String)
   contents: string;
 
+  @Field(() => Int)
+  maxPeople: number;
+
   @Field(() => [String])
   images: string[];
 
