@@ -23,7 +23,7 @@ export class AuthService {
       { email: user.email },
       { secret: 'accesskey', expiresIn: '1h' },
     );
-    res.setHeader('Set-Cookie', `accessToken=${accessToken}; path=/;`);
+    res.cookie('accessToken', accessToken);
   }
 
   getRefreshToKen({ user, res }) {
@@ -31,7 +31,7 @@ export class AuthService {
       { email: user.email, sub: user.id },
       { secret: 'refreshkey', expiresIn: '2w' },
     );
-    res.setHeader('Set-Cookie', `refreshToken=${refreshToken}; path=/;`);
+    res.cookie('refreshToken', refreshToken);
   }
 
   async getUserInfo(req, res) {
@@ -47,7 +47,7 @@ export class AuthService {
 
     // 3. 로그인
     this.getRefreshToKen({ user, res });
-    res.redirect('http://localhost:3000/result.html');
+    res.redirect('http://localhost:3000/main');
   }
 
   async sendEmail({ email }) {
