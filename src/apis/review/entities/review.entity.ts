@@ -18,11 +18,7 @@ export class Review {
 
   @Column()
   @Field(() => String)
-  roomName: string;
-
-  @Column()
-  @Field(() => String)
-  nickname: string;
+  writer: string;
 
   @Column()
   @Field(() => String)
@@ -40,5 +36,5 @@ export class Review {
 
   @ManyToOne(() => Room)
   @Field(() => Room)
-  branch: Room;
+  room: Room;
 }

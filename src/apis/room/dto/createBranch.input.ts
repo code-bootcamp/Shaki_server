@@ -3,6 +3,9 @@ import { Field, InputType, Int, Float } from '@nestjs/graphql';
 @InputType()
 export class CreateRoomInput {
   @Field(() => String)
+  branch: string;
+
+  @Field(() => String)
   name: string;
 
   @Field(() => Int)

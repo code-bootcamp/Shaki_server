@@ -27,7 +27,6 @@ export class AuthService {
     res.setHeader('Set-Cookie', `refreshToken=${refreshToken}; path=/;`);
   }
 
-
   async getUserInfo(req, res) {
     let user = await this.userService.findOne({ email: req.user.email });
 
@@ -43,6 +42,8 @@ export class AuthService {
     // 3. 로그인
     this.getRefreshToKen({ user, res });
     res.redirect('http://localhost:3000/result.html');
+  }
+
   async sendEmail({ email }) {
     const EMAIL_USER = process.env.EMAIL_USER;
     const EMAIL_PASS = process.env.EMAIL_PASS;

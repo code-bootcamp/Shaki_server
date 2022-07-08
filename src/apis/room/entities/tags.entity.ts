@@ -28,5 +28,5 @@ export class Tags {
 
   @ManyToOne(() => Room)
   @Field(() => Room)
-  branch: Room;
+  room: Room;
 }

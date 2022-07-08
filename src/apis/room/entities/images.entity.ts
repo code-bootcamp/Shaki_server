@@ -28,5 +28,5 @@ export class Images {
 
   @ManyToOne(() => Room)
   @Field(() => Room)
-  branch: Room;
+  room: Room;
 }
