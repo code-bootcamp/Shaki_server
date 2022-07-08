@@ -46,6 +46,7 @@ export class AuthService {
     }
 
     // 3. 로그인
+    this.getAccessToken({ user, res });
     this.getRefreshToKen({ user, res });
     res.redirect('http://localhost:3000/main');
   }
