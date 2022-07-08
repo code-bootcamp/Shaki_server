@@ -12,10 +12,6 @@ export class User {
   @Field(() => String)
   name: string;
 
-  @Column()
-  @Field(() => String)
-  nickname: String;
-
   @Column({ nullable: true })
   @Field(() => String)
   pwd: string;

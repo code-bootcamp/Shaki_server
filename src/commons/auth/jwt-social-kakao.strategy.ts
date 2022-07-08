@@ -12,12 +12,9 @@ export class JwtKaKaoStrategy extends PassportStrategy(Strategy, 'kakao') {
   }
 
   validate(_, __, profile) {
-    const nickname = profile.emails[0].value.split('@')[0];
     return {
       email: profile._json.kakao_account.email,
       name: profile.displayName,
-      // pwd: '1234',
-      nickname,
     };
   }
 }

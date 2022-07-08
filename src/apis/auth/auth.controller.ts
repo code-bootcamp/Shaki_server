@@ -5,7 +5,7 @@ import { User } from '../user/entities/user.entity';
 import { AuthService } from './auth.service';
 
 interface IQAuthUser {
-  user: Pick<User, 'email' | 'name' | 'nickname'>;
+  user: Pick<User, 'email' | 'name'>;
 }
 
 @Controller()

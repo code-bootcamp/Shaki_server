@@ -4,19 +4,26 @@ import { UserService } from '../user/user.service';
 import * as nodemailer from 'nodemailer';
 import 'dotenv/config';
 import * as bcrypt from 'bcrypt';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { User } from '../user/entities/user.entity';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly jwtService: JwtService, //
     private readonly userService: UserService,
+
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
   ) {}
 
-  getAccessToken({ user }) {
-    return this.jwtService.sign(
-      { email: user.email, sub: user.id },
+  getAccessToken({ user, res }) {
+    const accessToken = this.jwtService.sign(
+      { email: user.email },
       { secret: 'accesskey', expiresIn: '1h' },
     );
+    res.setHeader('Set-Cookie', `accessToken=${accessToken}; path=/;`);
   }
 
   getRefreshToKen({ user, res }) {
@@ -29,18 +36,19 @@ export class AuthService {
 
   async getUserInfo(req, res) {
     let user = await this.userService.findOne({ email: req.user.email });
-    // const hashedPwd = await bcrypt.hash(req.user.password, 10);
+
     // 2. 회원가입
-    // if (!user) {
-    //   user = await this.userService.create({
-    //     email: req.user.email,
-    //     name: req.user.name,
-    //   });
-    // }
+    if (!user) {
+      user = await this.userRepository.save({
+        email: req.user.email,
+        name: req.user.name,
+      });
+    }
 
     // 3. 로그인
     this.getRefreshToKen({ user, res });
-    res.redirect('http://localhost:3000/result.html');
+    this.getAccessToken({ user, res });
+    res.redirect('www.naver.com');
   }
 
   async sendEmail({ email }) {
