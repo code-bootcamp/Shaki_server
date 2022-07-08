@@ -24,15 +24,7 @@ export class UserResolver {
 
   @UseGuards(GqlAuthAccessGuard)
   @Query(() => String)
-  fetchLoginUser(
-    @CurrentUser() currentUser: any, //
-  ) {
-    return '로그인 정보가 확인되었습니다';
-  }
-
-  @UseGuards(GqlAuthAccessGuard)
-  @Query(() => String)
-  async fetchLoginEmail(@Args('emial') email: string) {
+  async fetchLoginUser(@Args('emial') email: string) {
     return await this.userService.findOne({ email });
   }
 }
