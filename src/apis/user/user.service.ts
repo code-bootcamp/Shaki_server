@@ -6,7 +6,8 @@ import { User } from './entities/user.entity';
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(User) private readonly userRepository: Repository<User>, //
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>, //
   ) {}
 
   async create({ hashedPwd: pwd, ...userInfo }) {
@@ -18,7 +19,7 @@ export class UserService {
     return result;
   }
 
-  async findEmail({ email }) {
+  async findOne({ email }) {
     return await this.userRepository.findOne({
       where: { email },
     });

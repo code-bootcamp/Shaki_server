@@ -1,13 +1,13 @@
-import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { Field, ObjectType } from '@nestjs/graphql';
 import {
   Column,
   DeleteDateColumn,
   Entity,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
-  ManyToOne
+  ManyToOne,
 } from 'typeorm';
-import { Branch } from './branch.entity';
+import { Room } from './room.entity';
 
 @Entity()
 @ObjectType()
@@ -26,7 +26,7 @@ export class Tags {
   @DeleteDateColumn()
   deletedAt: Date;
 
-  @ManyToOne(() => Branch)
-  @Field(() => Branch)
-  branch: Branch;
+  @ManyToOne(() => Room)
+  @Field(() => Room)
+  room: Room;
 }

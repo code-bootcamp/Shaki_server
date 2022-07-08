@@ -38,12 +38,28 @@ export class TestService {
     const searchResult = await this.elasticsearchService.search({
       index: 'test',
       query: {
-        match: { name },
+        match: {
+          name,
+        },
       },
     });
 
-    const result = searchResult.hits.hits.map((el) => el._source['name']);
+    const hits = searchResult.hits.hits;
+
+    let result = hits.map((el) => el._source);
     return result;
-    // const result = await this.webtoonRepository.findByIds(resultId);
+  }
+
+  async elasticCreateTest({ name }) {
+    await this.elasticsearchService.create({
+      id: name,
+      index: 'test',
+      document: {
+        name,
+        value: '안녕하세요',
+      },
+    });
+
+    return true;
   }
 }

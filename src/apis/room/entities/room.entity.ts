@@ -1,4 +1,5 @@
 import { Field, Int, ObjectType, Float } from '@nestjs/graphql';
+import { Review } from 'src/apis/review/entities/review.entity';
 import {
   Column,
   DeleteDateColumn,
@@ -12,10 +13,22 @@ import { Tags } from './tags.entity';
 
 @Entity()
 @ObjectType()
-export class Branch {
+export class Room {
   @PrimaryGeneratedColumn('uuid')
   @Field(() => String)
   id: number;
+
+  @Column()
+  @Field(() => String)
+  branch: string;
+
+  @Column({ default: 0 })
+  @Field(() => Int)
+  usedPeople: number;
+
+  @Column({ default: 0 })
+  @Field(() => Int)
+  starAmount: number;
 
   @Column()
   @Field(() => String)
@@ -26,11 +39,15 @@ export class Branch {
   price: number;
 
   @Column()
+  @Field(() => Int)
+  maxPeople: number;
+
+  @Column()
   @Field(() => String)
   contents: string;
 
-  @Column({ default: 0 })
-  @Field(() => Int)
+  @Column({ default: 0, type: 'decimal', precision: 2, scale: 1 })
+  @Field(() => Float)
   star: number;
 
   @Column()
@@ -59,11 +76,15 @@ export class Branch {
   @DeleteDateColumn()
   deletedAt: Date;
 
-  @OneToMany(() => Images, (images) => images.branch)
+  @OneToMany(() => Images, (images) => images.room)
   @Field(() => [Images])
   images: Images[];
 
-  @OneToMany(() => Tags, (tags) => tags.branch)
+  @OneToMany(() => Tags, (tags) => tags.room)
   @Field(() => [Tags])
   tags: Tags[];
+
+  @OneToMany(() => Review, (reviews) => reviews.room)
+  @Field(() => [Review])
+  reviews: Review[];
 }
