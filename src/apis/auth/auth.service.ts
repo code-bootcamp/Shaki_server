@@ -47,7 +47,7 @@ export class AuthService {
 
     // 3. 로그인
     this.getRefreshToKen({ user, res });
-    res.redirect('http://localhost:3000/result.html');
+    res.redirect('http://localhost:3000/main');
   }
 
   async sendEmail({ email }) {

@@ -10,6 +10,7 @@ import { UserModule } from './apis/user/user.module';
 import { RoomModule } from './apis/room/room.module';
 import { AuthModule } from './apis/auth/auth.module';
 import { ReviewModule } from './apis/review/review.module';
+import { PaymentModule } from './apis/payment/payment.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { ReviewModule } from './apis/review/review.module';
     UserModule,
     RoomModule,
     ReviewModule,
+    PaymentModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: 'src/commons/graphql/schema.gql',
