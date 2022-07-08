@@ -24,7 +24,7 @@ export class AuthService {
       { secret: 'accesskey', expiresIn: '1h' },
     );
 
-    res.setHeader('Access-Control-Allow-Origin', 'http://shakiback.shop/');
+    res.setHeader('Access-Control-Allow-Origin', 'https://shakiback.shop/');
     res.setHeader(
       'Set-Cookie',
       `accessToken=${accessToken}; path=/; domain=.mybacksite.com; SameSite=None; Secure; httpOnly`,
@@ -37,7 +37,7 @@ export class AuthService {
       { secret: 'refreshkey', expiresIn: '2w' },
     );
 
-    res.setHeader('Access-Control-Allow-Origin', 'http://shakiback.shop/');
+    res.setHeader('Access-Control-Allow-Origin', 'https://shakiback.shop/');
     res.setHeader(
       'Set-Cookie',
       `refreshToken=${refreshToken}; path=/; domain=.mybacksite.com; SameSite=None; Secure; httpOnly`,
