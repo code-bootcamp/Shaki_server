@@ -10,7 +10,7 @@ export class RoomResolver {
   ) {}
 
   @Query(() => [Room])
-  async fetchRooms() {
+  async fetchBranches() {
     return await this.roomService.find();
   }
 
@@ -23,7 +23,7 @@ export class RoomResolver {
 
   @Mutation(() => Boolean)
   async createRoom(
-    @Args('createBranch') createRoomInput: CreateRoomInput, //
+    @Args('createRoom') createRoomInput: CreateRoomInput, //
   ) {
     const result = await this.roomService.create({ createRoomInput });
     if (result) return true;

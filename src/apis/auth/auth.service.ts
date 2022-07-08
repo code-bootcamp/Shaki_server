@@ -47,8 +47,7 @@ export class AuthService {
 
     // 3. 로그인
     this.getRefreshToKen({ user, res });
-    this.getAccessToken({ user, res });
-    res.redirect('www.naver.com');
+    res.redirect('http://localhost:3000/result.html');
   }
 
   async sendEmail({ email }) {

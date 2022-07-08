@@ -20,14 +20,14 @@ export class RoomService {
 
   async find() {
     return await this.roomRepository.find({
-      relations: ['images', 'tags'],
+      relations: ['images', 'tags', 'reviews'],
     });
   }
 
   async findOne({ id }) {
     return await this.roomRepository.findOne({
       where: { id },
-      relations: ['images', 'tags'],
+      relations: ['images', 'tags', 'reviews'],
     });
   }
 

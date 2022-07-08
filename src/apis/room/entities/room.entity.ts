@@ -1,4 +1,5 @@
 import { Field, Int, ObjectType, Float } from '@nestjs/graphql';
+import { Review } from 'src/apis/review/entities/review.entity';
 import {
   Column,
   DeleteDateColumn,
@@ -16,6 +17,10 @@ export class Room {
   @PrimaryGeneratedColumn('uuid')
   @Field(() => String)
   id: number;
+
+  @Column()
+  @Field(() => String)
+  branch: string;
 
   @Column()
   @Field(() => String)
@@ -59,11 +64,15 @@ export class Room {
   @DeleteDateColumn()
   deletedAt: Date;
 
-  @OneToMany(() => Images, (images) => images.branch)
+  @OneToMany(() => Images, (images) => images.room)
   @Field(() => [Images])
   images: Images[];
 
-  @OneToMany(() => Tags, (tags) => tags.branch)
+  @OneToMany(() => Tags, (tags) => tags.room)
   @Field(() => [Tags])
   tags: Tags[];
+
+  @OneToMany(() => Review, (reviews) => reviews.room)
+  @Field(() => [Review])
+  reviews: Review[];
 }
