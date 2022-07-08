@@ -7,8 +7,9 @@ import { RedisClientOptions } from 'redis';
 import * as redisStore from 'cache-manager-redis-store';
 import { HttpsModule } from './apis/https/https.module';
 import { UserModule } from './apis/user/user.module';
-import { RoomModule } from './apis/room/room.module';
 import { AuthModule } from './apis/auth/auth.module';
+import { ReviewModule } from './apis/review/review.module';
+import { RoomModule } from './apis/room/room.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { AuthModule } from './apis/auth/auth.module';
     AuthModule,
     UserModule,
     RoomModule,
+    ReviewModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: 'src/commons/graphql/schema.gql',
