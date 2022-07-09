@@ -26,12 +26,13 @@ export class AuthService {
 
     res.setHeader(
       'Access-Control-Allow-Origin',
-      'http://127.0.0.1:5500/tokentest.html',
+      'https://shakiback.shop/graphql',
     );
-    res.setHeader(
-      'Set-Cookie',
-      `accessToken=${accessToken}; path=/; domain=.shakiback.shop; SameSite=None; Secure; httpOnly;`,
-    );
+
+    res.cookie('accessToken', accessToken, {
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000,
+    });
   }
 
   getRefreshToKen({ user, res }) {
@@ -42,12 +43,13 @@ export class AuthService {
 
     res.setHeader(
       'Access-Control-Allow-Origin',
-      'http://127.0.0.1:5500/tokentest.html',
+      'https://shakiback.shop/graphql',
     );
-    res.setHeader(
-      'Set-Cookie',
-      `refreshToken=${refreshToken}; path=/; domain=.shakiback.shop; SameSite=None; Secure; httpOnly;`,
-    );
+
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000,
+    });
   }
 
   async getUserInfo(req, res) {

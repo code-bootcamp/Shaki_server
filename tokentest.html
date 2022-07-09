@@ -17,7 +17,7 @@
     <script>
       function click() {
         async (rsp) => {
-          const data = await axios.post('https://shakiback.shop/graphql', {
+          const data = await axios.post('http://localhost:3000/graphql', {
             query: `
                 mutation {
                   login(email:"choral", pwd:"123")
