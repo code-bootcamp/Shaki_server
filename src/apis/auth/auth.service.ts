@@ -23,7 +23,16 @@ export class AuthService {
       { email: user.email },
       { secret: 'accesskey', expiresIn: '1h' },
     );
-    res.setHeader('Set-Cookie', `accessToken=${accessToken}; path=/;`);
+
+    res.setHeader(
+      'Access-Control-Allow-Origin',
+      'https://shakiback.shop/graphql',
+    );
+
+    res.cookie('accessToken', accessToken, {
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000,
+    });
   }
 
   getRefreshToKen({ user, res }) {
@@ -31,7 +40,16 @@ export class AuthService {
       { email: user.email, sub: user.id },
       { secret: 'refreshkey', expiresIn: '2w' },
     );
-    res.setHeader('Set-Cookie', `refreshToken=${refreshToken}; path=/;`);
+
+    res.setHeader(
+      'Access-Control-Allow-Origin',
+      'https://shakiback.shop/graphql',
+    );
+
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000,
+    });
   }
 
   async getUserInfo(req, res) {
@@ -46,6 +64,7 @@ export class AuthService {
     }
 
     // 3. 로그인
+    this.getAccessToken({ user, res });
     this.getRefreshToKen({ user, res });
     res.redirect('http://localhost:3000/main');
   }
