@@ -23,7 +23,18 @@ export class AuthService {
       { email: user.email },
       { secret: 'accesskey', expiresIn: '1h' },
     );
-    res.setHeader('Set-Cookie', `accessToken=${accessToken}; path=/;`);
+
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT');
+    res.setHeader(
+      'Access-Control-Allow-Headers',
+      'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers',
+    );
+    res.setHeader(
+      'Set-Cookie',
+      `accessToken=${accessToken}; path=/; domain=.shakiback.shop; SameSite=None; Secure; httpOnly;`,
+    );
   }
 
   getRefreshToKen({ user, res }) {
@@ -31,7 +42,18 @@ export class AuthService {
       { email: user.email, sub: user.id },
       { secret: 'refreshkey', expiresIn: '2w' },
     );
-    res.setHeader('Set-Cookie', `refreshToken=${refreshToken}; path=/;`);
+
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT');
+    res.setHeader(
+      'Access-Control-Allow-Headers',
+      'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers',
+    );
+    res.setHeader(
+      'Set-Cookie',
+      `refreshToken=${refreshToken}; path=/; domain=.shakiback.shop; SameSite=None; Secure; httpOnly;`,
+    );
   }
 
   async getUserInfo(req, res) {
@@ -46,6 +68,7 @@ export class AuthService {
     }
 
     // 3. 로그인
+    this.getAccessToken({ user, res });
     this.getRefreshToKen({ user, res });
     res.redirect('http://localhost:3000/main');
   }
