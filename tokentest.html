@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>결제하기</title>
+    <script
+      type="text/javascript"
+      src="https://code.jquery.com/jquery-1.12.4.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://unpkg.com/axios/dist/axios.min.js"
+    ></script>
+    <script>
+      function click() {
+        async (rsp) => {
+          const data = await axios.post('https://shakiback.shop/graphql', {
+            query: `
+                mutation {
+                  login(email:"choral", pwd:"123")
+                }          
+              `,
+          });
+          console.log('성공');
+          alert('성공');
+        };
+      }
+    </script>
+  </head>
+  <body>
+    <button onclick="click()">확인</button>
+  </body>
+</html>
