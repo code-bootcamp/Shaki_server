@@ -24,10 +24,16 @@ export class AuthService {
       { secret: 'accesskey', expiresIn: '1h' },
     );
 
-    res.setHeader('Access-Control-Allow-Origin', 'https://shakiback.shop/');
+    res.setHeader('Access-Control-Allow-Origin', 'https://shakiback.shop');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT');
+    res.setHeader(
+      'Access-Control-Allow-Headers',
+      'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers',
+    );
     res.setHeader(
       'Set-Cookie',
-      `accessToken=${accessToken}; path=/; domain=.mybacksite.com; SameSite=None; Secure; httpOnly`,
+      `accessToken=${accessToken}; path=/; domain=.shakiback.shop; Secure; httpOnly; SameSite=None;`,
     );
   }
 
@@ -37,10 +43,16 @@ export class AuthService {
       { secret: 'refreshkey', expiresIn: '2w' },
     );
 
-    res.setHeader('Access-Control-Allow-Origin', 'https://shakiback.shop/');
+    res.setHeader('Access-Control-Allow-Origin', 'https://shakiback.shop');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT');
+    res.setHeader(
+      'Access-Control-Allow-Headers',
+      'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers',
+    );
     res.setHeader(
       'Set-Cookie',
-      `refreshToken=${refreshToken}; path=/; domain=.mybacksite.com; SameSite=None; Secure; httpOnly`,
+      `refreshToken=${refreshToken}; path=/; domain=.shakiback.shop; Secure; httpOnly; SameSite=None;`,
     );
   }
 
