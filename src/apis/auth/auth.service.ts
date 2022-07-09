@@ -31,6 +31,7 @@ export class AuthService {
 
     res.cookie('accessToken', accessToken, {
       httpOnly: true,
+      domain: 'https://shakiback.shop',
       maxAge: 24 * 60 * 60 * 1000,
     });
   }
@@ -48,6 +49,7 @@ export class AuthService {
 
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
+      domain: 'https://shakiback.shop',
       maxAge: 24 * 60 * 60 * 1000,
     });
   }
