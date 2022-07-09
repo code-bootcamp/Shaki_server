@@ -10,7 +10,7 @@ export class RoomResolver {
   ) {}
 
   @Query(() => [Room])
-  async fetchBranches() {
+  async fetchRooms() {
     return await this.roomService.find();
   }
 

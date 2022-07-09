@@ -32,6 +32,10 @@ export class Room {
 
   @Column()
   @Field(() => String)
+  remarks: string;
+
+  @Column()
+  @Field(() => String)
   name: string;
 
   @Column()

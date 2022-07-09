@@ -6,6 +6,9 @@ export class CreateRoomInput {
   branch: string;
 
   @Field(() => String)
+  remarks: string;
+
+  @Field(() => String)
   name: string;
 
   @Field(() => Int)
