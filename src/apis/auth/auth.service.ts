@@ -24,15 +24,17 @@ export class AuthService {
       { secret: 'accesskey', expiresIn: '1h' },
     );
 
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT');
     res.setHeader(
-      'Access-Control-Allow-Origin',
-      'https://shakiback.shop/graphql',
+      'Access-Control-Allow-Headers',
+      'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers',
     );
-
-    res.cookie('accessToken', accessToken, {
-      httpOnly: true,
-      maxAge: 24 * 60 * 60 * 1000,
-    });
+    res.setHeader(
+      'Set-Cookie',
+      `accessToken=${accessToken}; path=/; domain=.shakiback.shop; SameSite=None; Secure; httpOnly;`,
+    );
   }
 
   getRefreshToKen({ user, res }) {
@@ -41,15 +43,17 @@ export class AuthService {
       { secret: 'refreshkey', expiresIn: '2w' },
     );
 
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT');
     res.setHeader(
-      'Access-Control-Allow-Origin',
-      'https://shakiback.shop/graphql',
+      'Access-Control-Allow-Headers',
+      'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers',
     );
-
-    res.cookie('refreshToken', refreshToken, {
-      httpOnly: true,
-      maxAge: 24 * 60 * 60 * 1000,
-    });
+    res.setHeader(
+      'Set-Cookie',
+      `refreshToken=${refreshToken}; path=/; domain=.shakiback.shop; SameSite=None; Secure; httpOnly;`,
+    );
   }
 
   async getUserInfo(req, res) {
