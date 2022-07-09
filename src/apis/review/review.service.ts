@@ -15,9 +15,14 @@ export class ReivewService {
   ) {}
 
   async create({ createReviewInput }) {
-    const { id, star, ...items } = createReviewInput;
-    const findRoom = await this.roomRepository.findOne({ where: { id } });
+    const { roomId, star, ...items } = createReviewInput;
 
+    const findRoom = await this.roomRepository.findOne({
+      where: { id: roomId },
+      relations: ['images', 'tags', 'reviews', 'branch'],
+    });
+
+    console.log(findRoom);
     const { usedPeople, starAmount, ...etc } = findRoom;
 
     const starCal = ((starAmount + star) / (usedPeople + 1)).toFixed(1);

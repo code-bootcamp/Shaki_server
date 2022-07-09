@@ -7,7 +7,9 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
   OneToMany,
+  ManyToOne,
 } from 'typeorm';
+import { Branch } from '../../branch/entities/branch.entity';
 import { Images } from './images.entity';
 import { Tags } from './tags.entity';
 
@@ -17,10 +19,6 @@ export class Room {
   @PrimaryGeneratedColumn('uuid')
   @Field(() => String)
   id: number;
-
-  @Column()
-  @Field(() => String)
-  branch: string;
 
   @Column({ default: 0 })
   @Field(() => Int)
@@ -91,4 +89,8 @@ export class Room {
   @OneToMany(() => Review, (reviews) => reviews.room)
   @Field(() => [Review])
   reviews: Review[];
+
+  @ManyToOne(() => Branch)
+  @Field(() => Branch)
+  branch: Branch;
 }

@@ -1,26 +1,24 @@
-import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { Field, ObjectType } from '@nestjs/graphql';
 import {
   Column,
   DeleteDateColumn,
   Entity,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
+  ManyToOne,
 } from 'typeorm';
+import { Room } from '../../room/entities/room.entity';
 
 @Entity()
 @ObjectType()
-export class Test {
+export class Branch {
   @PrimaryGeneratedColumn('uuid')
   @Field(() => String)
   id: number;
 
   @Column()
   @Field(() => String)
-  name: string;
-
-  @Column()
-  @Field(() => String)
-  unit: string;
+  branch: string;
 
   @UpdateDateColumn()
   updatedAt: Date;

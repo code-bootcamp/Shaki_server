@@ -2,7 +2,6 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { CacheModule, Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { TestModule } from './apis/test/test.module';
 import { RedisClientOptions } from 'redis';
 import * as redisStore from 'cache-manager-redis-store';
 import { HttpsModule } from './apis/https/https.module';
@@ -11,16 +10,17 @@ import { AuthModule } from './apis/auth/auth.module';
 import { PaymentModule } from './apis/payment/payment.module';
 import { ReviewModule } from './apis/review/review.module';
 import { RoomModule } from './apis/room/room.module';
+import { BranchModule } from './apis/branch/branch.module';
 
 @Module({
   imports: [
-    TestModule,
     HttpsModule,
     AuthModule,
     UserModule,
     RoomModule,
     PaymentModule,
     ReviewModule,
+    BranchModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: 'src/commons/graphql/schema.gql',

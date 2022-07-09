@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { Room } from './entities/room.entity';
 import { Images } from './entities/images.entity';
 import { Tags } from './entities/tags.entity';
+import { Branch } from '../branch/entities/branch.entity';
 
 @Injectable()
 export class RoomService {
@@ -16,32 +17,46 @@ export class RoomService {
 
     @InjectRepository(Images)
     private readonly imagesRepository: Repository<Images>,
+
+    @InjectRepository(Branch)
+    private readonly branchRepository: Repository<Branch>,
   ) {}
 
   async find() {
     return await this.roomRepository.find({
-      relations: ['images', 'tags', 'reviews'],
+      relations: ['images', 'tags', 'reviews', 'branch'],
     });
   }
 
   async findOne({ id }) {
     return await this.roomRepository.findOne({
       where: { id },
-      relations: ['images', 'tags', 'reviews'],
+      relations: ['images', 'tags', 'reviews', 'branch'],
     });
   }
 
   async create({ createRoomInput }) {
-    const { tags, images, ...items } = createRoomInput;
+    const { tags, images, branch, ...items } = createRoomInput;
 
-    const branchResult = await this.roomRepository.save({
+    let branchResult = await this.branchRepository.findOne({
+      where: { branch },
+    });
+
+    if (!branchResult) {
+      branchResult = await this.branchRepository.save({
+        branch,
+      });
+    }
+
+    const roomResult = await this.roomRepository.save({
       ...items,
+      branch: branchResult,
     });
 
     let tagsResult = [];
     tags.forEach(async (el) => {
       const tag = await this.tagsRepository.save({
-        branch: branchResult.id,
+        room: roomResult.id,
         tag: el,
       });
       tagsResult.push(tag);
@@ -50,7 +65,7 @@ export class RoomService {
     let imagesResult = [];
     images.forEach(async (el) => {
       const url = await this.imagesRepository.save({
-        branch: branchResult.id,
+        room: roomResult.id,
         url: el,
       });
       imagesResult.push(url);
