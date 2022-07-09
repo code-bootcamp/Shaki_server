@@ -8,6 +8,7 @@ import * as redisStore from 'cache-manager-redis-store';
 import { HttpsModule } from './apis/https/https.module';
 import { UserModule } from './apis/user/user.module';
 import { AuthModule } from './apis/auth/auth.module';
+import { PaymentModule } from './apis/payment/payment.module';
 import { ReviewModule } from './apis/review/review.module';
 import { RoomModule } from './apis/room/room.module';
 
@@ -18,6 +19,7 @@ import { RoomModule } from './apis/room/room.module';
     AuthModule,
     UserModule,
     RoomModule,
+    PaymentModule,
     ReviewModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
