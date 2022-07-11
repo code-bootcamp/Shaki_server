@@ -20,6 +20,7 @@ export class AuthController {
     @Req() req: Request & IQAuthUser, //
     @Res() res: Response,
   ) {
+    res.cookie('accessToken', `123123123`);
     this.authService.getUserInfo(req, res);
   }
 
