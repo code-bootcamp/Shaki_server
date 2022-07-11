@@ -71,6 +71,6 @@ export class RoomService {
       imagesResult.push(url);
     });
 
-    return true;
+    return roomResult.id;
   }
 }
