@@ -88,9 +88,8 @@ export class AuthResolver {
     return '로그아웃 되었습니다.';
   }
 
-  @Mutation(() => String)
+  @Mutation(() => Number)
   async checkEmail(@Args('email') email: string) {
-    await this.authService.sendEmail({ email });
-    return '성공';
+    return await this.authService.sendEmail({ email });
   }
 }

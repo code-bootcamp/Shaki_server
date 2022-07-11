@@ -77,6 +77,8 @@ export class AuthService {
       subject: 'Shaki 인증번호',
       html: token,
     });
+
+    return token;
   }
 
   getAuthNum() {
