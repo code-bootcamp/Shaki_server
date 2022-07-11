@@ -39,7 +39,7 @@ export class AuthService {
 
   getRefreshToKen({ user, res }) {
     const refreshToken = this.jwtService.sign(
-      { email: user.email, sub: user.id },
+      { email: user.email },
       { secret: 'refreshkey', expiresIn: '2w' },
     );
 
