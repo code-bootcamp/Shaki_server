@@ -38,9 +38,10 @@ export class AuthResolver {
     if (!user) throw new UnprocessableEntityException('이메일이 없습니다.');
 
     const isAuth = await bcrypt.compare(pwd, user.pwd);
+
     if (!isAuth) throw new UnprocessableEntityException('암호가 틀렸습니다.');
 
-    this.authService.getRefreshToKen({ user, res: context.req.res });
+    // this.authService.getRefreshToKen({ user, res: context.req.res });
     this.authService.getAccessToken({ user, res: context.req.res });
     return true;
   }

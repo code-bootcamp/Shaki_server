@@ -17,12 +17,13 @@ export class AuthService {
     private readonly userRepository: Repository<User>,
   ) {}
 
-  getAccessToken({ user, res }) {
+  async getAccessToken({ user, res }) {
     const accessToken = this.jwtService.sign(
       { email: user.email },
       { secret: 'accesskey', expiresIn: '1h' },
     );
-
+    console.log('123');
+    // res.setHeader('Set-Cookie', `accessToken=${accessToken}`);
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
     res.setHeader('Access-Control-Allow-Credentials', 'true');
     res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT');
@@ -30,6 +31,7 @@ export class AuthService {
       'Access-Control-Allow-Headers',
       'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers',
     );
+
     res.setHeader(
       'Set-Cookie',
       `accessToken=${accessToken}; path=/; domain=.shakiback.shop; SameSite=None; Secure; httpOnly;`,
@@ -41,7 +43,8 @@ export class AuthService {
       { email: user.email },
       { secret: 'refreshkey', expiresIn: '2w' },
     );
-
+    console.log('321');
+    // res.setHeader('Set-Cookie', `refreshToken=${refreshToken}`);
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
     res.setHeader('Access-Control-Allow-Credentials', 'true');
     res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT');
@@ -49,6 +52,7 @@ export class AuthService {
       'Access-Control-Allow-Headers',
       'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers',
     );
+
     res.setHeader(
       'Set-Cookie',
       `refreshToken=${refreshToken}; path=/; domain=.shakiback.shop; SameSite=None; Secure; httpOnly;`,
