@@ -34,10 +34,4 @@ export class CreateRoomInput {
 
   @Field(() => String)
   conaddressDetail: string;
-
-  @Field(() => Float)
-  lat: number;
-
-  @Field(() => Float)
-  lng: number;
 }
