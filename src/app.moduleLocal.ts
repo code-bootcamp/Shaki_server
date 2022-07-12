@@ -11,6 +11,7 @@ import { AuthModule } from './apis/auth/auth.module';
 import { ReviewModule } from './apis/review/review.module';
 import { PaymentModule } from './apis/payment/payment.module';
 import { BranchModule } from './apis/branch/branch.module';
+import { FileModule } from './apis/file/file.module';
 
 @Module({
   imports: [
@@ -21,14 +22,15 @@ import { BranchModule } from './apis/branch/branch.module';
     ReviewModule,
     PaymentModule,
     BranchModule,
+    FileModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: 'src/commons/graphql/schema.gql',
       context: ({ req, res }) => ({ req, res }),
-      cors: {
-        origin: 'http://localhost:3000',
-        credentials: 'include',
-      },
+      // cors: {
+      //   origin: 'http://localhost:3000',
+      //   credentials: 'include',
+      // },
     }),
     TypeOrmModule.forRoot({
       type: 'mysql',
