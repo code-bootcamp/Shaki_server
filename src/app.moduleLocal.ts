@@ -20,7 +20,7 @@ import { AuthModule } from './apis/auth/auth.module';
       autoSchemaFile: 'src/commons/graphql/schema.gql',
       context: ({ req, res }) => ({ req, res }),
       cors: {
-        origin: 'http://localhost:3000',
+        origin: true,
         credentials: true,
       },
     }),
