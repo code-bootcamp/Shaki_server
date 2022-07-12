@@ -23,10 +23,6 @@ export class FileService {
     });
 
     url = 'https://storage.googleapis.com/' + url;
-<<<<<<< HEAD
-=======
-
->>>>>>> dev
     return url;
   }
 }
