@@ -8,6 +8,10 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.use(graphqlUploadExpress());
   app.useGlobalFilters(new HttpExceptionFilter());
+  app.enableCors({
+    origin: 'http://localhost:3000/',
+    credentials: true,
+  });
   app.enableCors();
   await app.listen(3000);
 }
