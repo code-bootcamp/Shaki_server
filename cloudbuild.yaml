@@ -17,7 +17,7 @@ steps:
         'set',
         'image',
         'deployment/shaki-back',
-        'shaki-registry-sha256-1=asia.gcr.io/shaki-355105/shaki-registry:51',
+        'shaki-registry-sha256-1=asia.gcr.io/shaki-355105/shaki-registry:52',
       ]
     env:
       - CLOUDSDK_COMPUTE_ZONE=asia-northeast3
