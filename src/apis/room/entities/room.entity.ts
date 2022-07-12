@@ -64,14 +64,6 @@ export class Room {
   @Field(() => String)
   conaddressDetail: string;
 
-  @Column({ type: 'decimal', precision: 9, scale: 7 })
-  @Field(() => Float)
-  lat: number;
-
-  @Column({ type: 'decimal', precision: 10, scale: 7 })
-  @Field(() => Float)
-  lng: number;
-
   @UpdateDateColumn()
   updatedAt: Date;
 

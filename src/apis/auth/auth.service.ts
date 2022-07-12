@@ -23,8 +23,16 @@ export class AuthService {
       { secret: 'accesskey', expiresIn: '1h' },
     );
     console.log('123');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT');
+    res.setHeader(
+      'Access-Control-Allow-Headers',
+      'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers',
+    );
+    // res.setHeader('Set-Cookie', `accessToken=${accessToken}; path=/;`);
 
-    res.setHeader('Set-Cookie', `accessToken=${accessToken}; path=/;`);
+    // res.cookie('accessToken', accessToken);
+    // res.setHeader('Set-Cookie', `accessToken=${accessToken}; path=/;`);
   }
 
   getRefreshToKen({ user, res }) {
