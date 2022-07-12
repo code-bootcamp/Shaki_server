@@ -29,7 +29,10 @@ export class AuthService {
       'Access-Control-Allow-Headers',
       'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers',
     );
-    res.setHeader('Set-Cookie', `accessToken=${accessToken}; path=/;`);
+    res.setHeader(
+      'Set-Cookie',
+      `accessToken=${accessToken}; path=/; domain=.shakiback.shop; SameSite=None; Secure; httpOnly;`,
+    );
   }
 
   getRefreshToKen({ user, res }) {
