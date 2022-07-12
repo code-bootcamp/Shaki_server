@@ -41,7 +41,7 @@ export class AuthResolver {
 
     if (!isAuth) throw new UnprocessableEntityException('암호가 틀렸습니다.');
 
-    // this.authService.getRefreshToKen({ user, res: context.req.res });
+    this.authService.getRefreshToKen({ user, res: context.req.res });
     this.authService.getAccessToken({ user, res: context.req.res });
 
     return true;
@@ -59,9 +59,10 @@ export class AuthResolver {
     });
   }
 
-  @UseGuards(GqlAuthAccessGuard)
+  // @UseGuards(GqlAuthAccessGuard)
   @Mutation(() => String)
   async logout(@Context() context: any) {
+    console.log(context);
     const accessToken = context.req.headers.authorization.replace(
       'Bearer ',
       '',

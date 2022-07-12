@@ -5,30 +5,24 @@ import 'dotenv/config';
 
 @Injectable()
 export class FileService {
-  async upload({ files }) {
-    const waitedFiles = await Promise.all(files);
-
+  async upload({ file }) {
+    console.log(file);
     const storage = new Storage({
       projectId: process.env.GCP_STORAGE_PROJECTID,
       keyFilename: process.env.GCP_STORAGE_KEYFILENAME,
     }).bucket(process.env.GCP_STORAGE_BUCKET);
 
-    let results = await Promise.all(
-      waitedFiles.map((el) => {
-        return new Promise((resolve, reject) => {
-          const filename = v4() + el.filename;
-          el.createReadStream()
-            .pipe(storage.file(filename).createWriteStream())
-            .on('finish', () =>
-              resolve(`${process.env.GCP_STORAGE_BUCKET}/${filename}`),
-            )
-            .on('error', () => reject());
-        });
-      }),
-    );
+    const filename = v4() + file.filename;
+    const url = await new Promise((resolve, reject) => {
+      file
+        .createReadStream()
+        .pipe(storage.file(filename).createWriteStream())
+        .on('finish', () =>
+          resolve(`${process.env.GCP_STORAGE_BUCKET}/${filename}`),
+        )
+        .on('error', (error) => reject(error));
+    });
 
-    results = results.map((el) => 'https://storage.googleapis.com/' + el);
-
-    return results;
+    return url;
   }
 }

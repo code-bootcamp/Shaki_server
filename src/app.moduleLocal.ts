@@ -27,10 +27,11 @@ import { FileModule } from './apis/file/file.module';
       driver: ApolloDriver,
       autoSchemaFile: 'src/commons/graphql/schema.gql',
       context: ({ req, res }) => ({ req, res }),
-      // cors: {
-      //   origin: 'http://localhost:3000',
-      //   credentials: 'include',
-      // },
+      cors: {
+        origin: ['http://127.0.0.1:5500/test.html'],
+        credentials: 'include',
+        exposedHeaders: ['Set-Cookie', 'Authorization'],
+      },
     }),
     TypeOrmModule.forRoot({
       type: 'mysql',
