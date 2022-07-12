@@ -29,7 +29,7 @@ import { FileModule } from './apis/file/file.module';
       context: ({ req, res }) => ({ req, res }),
       cors: {
         origin: 'http://localhost:3000/',
-        credentials: true,
+        credentials: 'include',
       },
     }),
     TypeOrmModule.forRoot({
