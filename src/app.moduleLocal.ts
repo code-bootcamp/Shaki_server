@@ -28,7 +28,7 @@ import { FileModule } from './apis/file/file.module';
       autoSchemaFile: 'src/commons/graphql/schema.gql',
       context: ({ req, res }) => ({ req, res }),
       cors: {
-        origin: '*',
+        origin: 'http://localhost:3000/',
         credentials: true,
       },
     }),
