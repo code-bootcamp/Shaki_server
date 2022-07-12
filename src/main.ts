@@ -6,12 +6,12 @@ import { graphqlUploadExpress } from 'graphql-upload';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.use(graphqlUploadExpress());
-  app.useGlobalFilters(new HttpExceptionFilter());
   app.enableCors({
     origin: 'http://localhost:3000/',
     credentials: true,
   });
+  app.use(graphqlUploadExpress());
+  app.useGlobalFilters(new HttpExceptionFilter());
   await app.listen(3000);
 }
 bootstrap();

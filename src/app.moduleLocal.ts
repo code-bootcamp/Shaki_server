@@ -7,22 +7,14 @@ import * as redisStore from 'cache-manager-redis-store';
 import { HttpsModule } from './apis/https/https.module';
 import { UserModule } from './apis/user/user.module';
 import { RoomModule } from './apis/room/room.module';
-import { AuthModule } from './apis/auth/auth.module';
 import { ReviewModule } from './apis/review/review.module';
 import { PaymentModule } from './apis/payment/payment.module';
 import { BranchModule } from './apis/branch/branch.module';
 import { FileModule } from './apis/file/file.module';
+import { AuthModule } from './apis/auth/auth.module';
 
 @Module({
   imports: [
-    HttpsModule,
-    AuthModule,
-    UserModule,
-    RoomModule,
-    ReviewModule,
-    PaymentModule,
-    BranchModule,
-    FileModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: 'src/commons/graphql/schema.gql',
@@ -48,6 +40,14 @@ import { FileModule } from './apis/file/file.module';
       url: 'redis://shaki-redis:6379',
       isGlobal: true,
     }),
+    HttpsModule,
+    AuthModule,
+    UserModule,
+    RoomModule,
+    ReviewModule,
+    PaymentModule,
+    BranchModule,
+    FileModule,
   ],
 })
 export class AppModuleLocal {}
