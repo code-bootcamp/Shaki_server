@@ -9,7 +9,7 @@ export class FileService {
     const waitedFiles = await Promise.all(files);
 
     const storage = new Storage({
-      projectId: process.env.GCP_STORAGE_KEYFILENAME,
+      projectId: process.env.GCP_STORAGE_PROJECTID,
       keyFilename: '/my-secret/shaki-355105-89e5ac09e9b4.json',
     }).bucket(process.env.GCP_STORAGE_BUCKET);
 
@@ -28,7 +28,6 @@ export class FileService {
     );
 
     results = results.map((el) => 'https://storage.googleapis.com/' + el);
-    console.log(results);
 
     return results;
   }
