@@ -41,8 +41,9 @@ export class AuthResolver {
 
     if (!isAuth) throw new UnprocessableEntityException('암호가 틀렸습니다.');
 
-    // this.authService.getRefreshToKen({ user, res: context.req.res });
+    this.authService.getRefreshToKen({ user, res: context.req.res });
     this.authService.getAccessToken({ user, res: context.req.res });
+
     return true;
   }
 
@@ -58,9 +59,10 @@ export class AuthResolver {
     });
   }
 
-  @UseGuards(GqlAuthAccessGuard)
+  // @UseGuards(GqlAuthAccessGuard)
   @Mutation(() => String)
   async logout(@Context() context: any) {
+    console.log(context);
     const accessToken = context.req.headers.authorization.replace(
       'Bearer ',
       '',
@@ -70,21 +72,21 @@ export class AuthResolver {
       '',
     );
     try {
-      jwt.verify(accessToken, 'accesskey');
-      jwt.verify(refreshToken, 'refreshkey');
+      const myAccess = jwt.verify(accessToken, 'accesskey');
+      const myRefresh = jwt.verify(refreshToken, 'refreshkey');
+      await this.cacheManager.set(`accessToken:${accessToken}`, 'accessToken', {
+        ttl: myAccess['exp'] - myAccess['iat'],
+      });
+      await this.cacheManager.set(
+        `refreshToken:${refreshToken}`,
+        'refreshToken',
+        {
+          ttl: myRefresh['exp'] - myRefresh['iat'],
+        },
+      );
     } catch {
       throw new UnauthorizedException();
     }
-    await this.cacheManager.set(`accessToken:${accessToken}`, 'accessToken', {
-      ttl: 90,
-    });
-    await this.cacheManager.set(
-      `refreshToken:${refreshToken}`,
-      'refreshToken',
-      {
-        ttl: 90,
-      },
-    );
     return '로그아웃 되었습니다.';
   }
 

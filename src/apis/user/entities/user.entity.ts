@@ -23,7 +23,4 @@ export class User {
   @Column()
   @Field(() => String)
   email: string;
-
-  // 영래야 배고팡... 나 밥사줘 응애
-  // 밥먹고싶어 응애 밥사줘 응애응애응앵
 }

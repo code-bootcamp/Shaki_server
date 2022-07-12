@@ -24,7 +24,7 @@ export class UserResolver {
 
   @UseGuards(GqlAuthAccessGuard)
   @Query(() => String)
-  async fetchLoginUser(@Args('emial') email: string) {
+  async fetchLoginUser(@Args('email') email: string) {
     return await this.userService.findOne({ email });
   }
 }
