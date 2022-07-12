@@ -7,10 +7,10 @@ import 'dotenv/config';
 export class FileService {
   async upload({ files }) {
     const waitedFiles = await Promise.all(files);
-
+    console.log(files);
     const storage = new Storage({
       projectId: process.env.GCP_STORAGE_PROJECTID,
-      keyFilename: '/my-secret/shaki-355105-89e5ac09e9b4.json',
+      keyFilename: process.env.GCP_STORAGE_KEYFILENAME,
     }).bucket(process.env.GCP_STORAGE_BUCKET);
 
     let results = await Promise.all(
