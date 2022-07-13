@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Room } from '../room/entities/room.entity';
+import { User } from '../user/entities/user.entity';
 import { Review } from './entities/review.entity';
 
 @Injectable()
@@ -12,9 +13,12 @@ export class ReivewService {
 
     @InjectRepository(Room)
     private readonly roomRepository: Repository<Room>,
+
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
   ) {}
 
-  async create({ createReviewInput }) {
+  async create({ email, createReviewInput }) {
     const { roomId, star, ...items } = createReviewInput;
 
     const findRoom = await this.roomRepository.findOne({
@@ -22,7 +26,12 @@ export class ReivewService {
       relations: ['images', 'tags', 'reviews', 'branch'],
     });
 
-    console.log(findRoom);
+    const findUser = await this.userRepository.findOne({
+      where: { email },
+    });
+
+    console.log(findUser);
+
     const { usedPeople, starAmount, ...etc } = findRoom;
 
     const starCal = ((starAmount + star) / (usedPeople + 1)).toFixed(1);
@@ -38,6 +47,7 @@ export class ReivewService {
       ...items,
       star,
       room: updatedRoom,
+      user: findUser,
     });
 
     return true;

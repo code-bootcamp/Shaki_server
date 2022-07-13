@@ -1,12 +1,11 @@
-import { UseGuards } from '@nestjs/common';
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { UnauthorizedException, UseGuards } from '@nestjs/common';
+import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { GqlAuthAccessGuard } from 'src/commons/auth/gql-auth.guard';
-import { CurrentUser } from 'src/commons/auth/gql-user.param';
 import { CreateUserInput } from './dto/createUser.input';
 import { User } from './entities/user.entity';
 import { UserService } from './user.service';
 import * as bcrypt from 'bcrypt';
-import { Room } from '../room/entities/room.entity';
+import * as jwt from 'jsonwebtoken';
 
 @Resolver()
 export class UserResolver {
@@ -15,8 +14,18 @@ export class UserResolver {
   ) {}
 
   @Query(() => User)
-  async fetchLoginUser(@Args('email') email: string) {
-    return await this.userService.findOne({ email });
+  async fetchLoginUser(
+    @Context() context: any, //
+  ) {
+    const accessToken = context.req.headers.authorization.split(' ')[1];
+    try {
+      const checkToken = jwt.verify(accessToken, 'accesskey');
+      const email = checkToken['email'];
+      const result = await this.userService.findOne({ email });
+      return result;
+    } catch {
+      throw new UnauthorizedException('유효하지 않은 토큰입니다.');
+    }
   }
 
   @Mutation(() => User)

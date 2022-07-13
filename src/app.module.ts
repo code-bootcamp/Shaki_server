@@ -12,6 +12,7 @@ import { RoomModule } from './apis/room/room.module';
 import { BranchModule } from './apis/branch/branch.module';
 import { FileModule } from './apis/file/file.module';
 import { AuthModule } from './apis/auth/auth.module';
+import { QuestionModule } from './apis/question/question.module';
 @Module({
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
@@ -36,6 +37,7 @@ import { AuthModule } from './apis/auth/auth.module';
       url: 'redis://10.93.209.3:6379',
       isGlobal: true,
     }),
+    QuestionModule,
     HttpsModule,
     AuthModule,
     UserModule,

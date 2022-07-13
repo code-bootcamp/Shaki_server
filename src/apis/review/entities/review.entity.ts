@@ -1,5 +1,6 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { Room } from 'src/apis/room/entities/room.entity';
+import { User } from 'src/apis/user/entities/user.entity';
 import {
   Column,
   DeleteDateColumn,
@@ -18,10 +19,6 @@ export class Review {
 
   @Column()
   @Field(() => String)
-  writer: string;
-
-  @Column()
-  @Field(() => String)
   content: string;
 
   @Column()
@@ -37,4 +34,8 @@ export class Review {
   @ManyToOne(() => Room)
   @Field(() => Room)
   room: Room;
+
+  @ManyToOne(() => User)
+  @Field(() => User)
+  user: User;
 }

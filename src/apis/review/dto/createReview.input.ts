@@ -6,9 +6,6 @@ export class CreateReviewInput {
   roomId: string;
 
   @Field(() => String)
-  writer: string;
-
-  @Field(() => String)
   content: string;
 
   @Field(() => Int)

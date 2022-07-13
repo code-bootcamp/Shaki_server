@@ -31,7 +31,7 @@ export class RoomService {
   async findOne({ id }) {
     return await this.roomRepository.findOne({
       where: { id },
-      relations: ['images', 'tags', 'reviews'],
+      relations: ['images', 'tags', 'reviews.user'],
     });
   }
 
