@@ -6,6 +6,7 @@ import 'dotenv/config';
 @Injectable()
 export class FileService {
   async upload({ file }) {
+    console.log(file);
     const storage = new Storage({
       projectId: process.env.GCP_STORAGE_PROJECTID,
       keyFilename: process.env.GCP_STORAGE_KEYFILENAME,

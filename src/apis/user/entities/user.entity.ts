@@ -1,5 +1,6 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Room } from 'src/apis/room/entities/room.entity';
+import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 @ObjectType()
@@ -23,4 +24,8 @@ export class User {
   @Column()
   @Field(() => String)
   email: string;
+
+  @ManyToMany(() => Room, (room) => room.user)
+  @Field(() => [Room])
+  room: Room[];
 }

@@ -17,22 +17,12 @@ export class AuthService {
     private readonly userRepository: Repository<User>,
   ) {}
 
-  async getAccessToken({ user, res }) {
+  getAccessToken({ user }) {
     const accessToken = this.jwtService.sign(
       { email: user.email },
       { secret: 'accesskey', expiresIn: '1h' },
     );
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
-    res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT');
-    res.setHeader(
-      'Access-Control-Allow-Headers',
-      'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers',
-    );
-    res.setHeader(
-      'Set-Cookie',
-      `accessToken=${accessToken}; path=/; domain=.shakiback.shop; SameSite=None; Secure; httpOnly;`,
-    );
+    return accessToken;
   }
 
   getRefreshToKen({ user, res }) {
@@ -58,7 +48,7 @@ export class AuthService {
     }
 
     // 3. 로그인
-    this.getAccessToken({ user, res });
+
     this.getRefreshToKen({ user, res });
     res.redirect('http://localhost:3000/main');
   }

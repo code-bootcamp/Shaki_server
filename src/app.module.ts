@@ -18,14 +18,10 @@ import { AuthModule } from './apis/auth/auth.module';
       driver: ApolloDriver,
       autoSchemaFile: 'src/commons/graphql/schema.gql',
       context: ({ req, res }) => ({ req, res }),
-      cors: {
-        origin: true,
-        Credential: true,
-      },
     }),
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: '10.112.128.5',
+      host: '10.93.208.3',
       port: 3306,
       username: 'root',
       password: 'root',
@@ -37,7 +33,7 @@ import { AuthModule } from './apis/auth/auth.module';
     }),
     CacheModule.register<RedisClientOptions>({
       store: redisStore,
-      url: 'redis://10.112.129.3:6379',
+      url: 'redis://10.93.209.3:6379',
       isGlobal: true,
     }),
     HttpsModule,

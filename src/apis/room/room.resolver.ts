@@ -2,7 +2,6 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { RoomService } from './room.service';
 import { CreateRoomInput } from './dto/createRoom.input';
 import { Room } from './entities/room.entity';
-import { StringDecoder } from 'string_decoder';
 
 @Resolver()
 export class RoomResolver {
@@ -11,7 +10,7 @@ export class RoomResolver {
   ) {}
 
   @Query(() => [Room])
-  async fetchRooms() {
+  async fetchBranches() {
     return await this.roomService.find();
   }
 

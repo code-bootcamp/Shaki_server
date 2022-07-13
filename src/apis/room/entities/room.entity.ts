@@ -1,5 +1,6 @@
 import { Field, Int, ObjectType, Float } from '@nestjs/graphql';
 import { Review } from 'src/apis/review/entities/review.entity';
+import { User } from 'src/apis/user/entities/user.entity';
 import {
   Column,
   DeleteDateColumn,
@@ -8,6 +9,8 @@ import {
   UpdateDateColumn,
   OneToMany,
   ManyToOne,
+  JoinTable,
+  ManyToMany,
 } from 'typeorm';
 import { Branch } from '../../branch/entities/branch.entity';
 import { Images } from './images.entity';
@@ -85,4 +88,9 @@ export class Room {
   @ManyToOne(() => Branch)
   @Field(() => Branch)
   branch: Branch;
+
+  @JoinTable()
+  @ManyToMany(() => User, (user) => user.room)
+  @Field(() => [User])
+  user: User[];
 }

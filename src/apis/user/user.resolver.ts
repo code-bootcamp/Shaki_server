@@ -6,12 +6,18 @@ import { CreateUserInput } from './dto/createUser.input';
 import { User } from './entities/user.entity';
 import { UserService } from './user.service';
 import * as bcrypt from 'bcrypt';
+import { Room } from '../room/entities/room.entity';
 
 @Resolver()
 export class UserResolver {
   constructor(
     private readonly userService: UserService, //
   ) {}
+
+  @Query(() => User)
+  async fetchLoginUser(@Args('email') email: string) {
+    return await this.userService.findOne({ email });
+  }
 
   @Mutation(() => User)
   async createUser(
@@ -22,9 +28,19 @@ export class UserResolver {
     return this.userService.create({ hashedPwd, ...userInfo });
   }
 
-  @UseGuards(GqlAuthAccessGuard)
+  @Mutation(() => User)
+  async createPick(
+    @Args('email') email: string,
+    @Args('roomId') room: string, //
+  ) {
+    return await this.userService.createPick({ email, room });
+  }
+
   @Query(() => String)
-  async fetchLoginUser(@Args('email') email: string) {
-    return await this.userService.findOne({ email });
+  async findEmail(
+    @Args('name') name: string,
+    @Args('phone_num') phone_num: string, //
+  ) {
+    return await this.userService.findEmail({ name, phone_num });
   }
 }

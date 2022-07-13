@@ -31,7 +31,6 @@ export class AuthResolver {
   async login(
     @Args('email') email: string, //
     @Args('pwd') pwd: string,
-    @Context() context: any,
   ) {
     const user = await this.userService.findOne({ email });
 
@@ -41,22 +40,7 @@ export class AuthResolver {
 
     if (!isAuth) throw new UnprocessableEntityException('암호가 틀렸습니다.');
 
-    this.authService.getRefreshToKen({ user, res: context.req.res });
-    this.authService.getAccessToken({ user, res: context.req.res });
-
-    return true;
-  }
-
-  @UseGuards(GqlAuthRefreshGuard)
-  @Mutation(() => String)
-  restoreAccessToken(
-    @CurrentUser() currentUser: any, //
-    @Context() context: any,
-  ) {
-    return this.authService.getAccessToken({
-      user: currentUser,
-      res: context.req.res,
-    });
+    return this.authService.getAccessToken({ user });
   }
 
   // @UseGuards(GqlAuthAccessGuard)

@@ -15,23 +15,23 @@ export class RoomService {
     @InjectRepository(Tags)
     private readonly tagsRepository: Repository<Tags>,
 
-    @InjectRepository(Images)
-    private readonly imagesRepository: Repository<Images>,
-
     @InjectRepository(Branch)
     private readonly branchRepository: Repository<Branch>,
+
+    @InjectRepository(Images)
+    private readonly imagesRepository: Repository<Images>,
   ) {}
 
   async find() {
     return await this.roomRepository.find({
-      relations: ['images', 'tags', 'reviews', 'branch'],
+      relations: ['images', 'tags', 'reviews'],
     });
   }
 
   async findOne({ id }) {
     return await this.roomRepository.findOne({
       where: { id },
-      relations: ['images', 'tags', 'reviews', 'branch'],
+      relations: ['images', 'tags', 'reviews'],
     });
   }
 
@@ -41,7 +41,6 @@ export class RoomService {
     let branchResult = await this.branchRepository.findOne({
       where: { branch },
     });
-
     if (!branchResult) {
       branchResult = await this.branchRepository.save({
         branch,
@@ -50,13 +49,13 @@ export class RoomService {
 
     const roomResult = await this.roomRepository.save({
       ...items,
-      branch: branchResult,
+      branch: branchResult.id,
     });
 
     let tagsResult = [];
     tags.forEach(async (el) => {
       const tag = await this.tagsRepository.save({
-        room: roomResult.id,
+        branch: branchResult.id,
         tag: el,
       });
       tagsResult.push(tag);
@@ -65,7 +64,7 @@ export class RoomService {
     let imagesResult = [];
     images.forEach(async (el) => {
       const url = await this.imagesRepository.save({
-        room: roomResult.id,
+        branch: branchResult.id,
         url: el,
       });
       imagesResult.push(url);
