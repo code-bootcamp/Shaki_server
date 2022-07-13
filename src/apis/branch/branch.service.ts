@@ -28,6 +28,7 @@ export class BranchService {
       }
     });
 
+    console.log(result);
     return result;
   }
 }

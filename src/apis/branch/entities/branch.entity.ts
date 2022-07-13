@@ -16,6 +16,10 @@ export class Branch {
   @Field(() => String)
   id: number;
 
+  @Column({ nullable: true })
+  @Field(() => String)
+  idAll: string;
+
   @Column()
   @Field(() => String)
   branch: string;

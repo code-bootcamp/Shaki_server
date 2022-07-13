@@ -31,7 +31,7 @@ export class RoomService {
   async findOne({ id }) {
     return await this.roomRepository.findOne({
       where: { id },
-      relations: ['images', 'tags', 'reviews.user'],
+      relations: ['images', 'tags', 'branch', 'reviews.user'],
     });
   }
 
@@ -41,6 +41,7 @@ export class RoomService {
     let branchResult = await this.branchRepository.findOne({
       where: { branch },
     });
+
     if (!branchResult) {
       branchResult = await this.branchRepository.save({
         branch,
@@ -51,6 +52,17 @@ export class RoomService {
       ...items,
       branch: branchResult.id,
     });
+    if (branchResult.idAll === null) {
+      branchResult = await this.branchRepository.save({
+        ...branchResult,
+        idAll: roomResult.id,
+      });
+    } else {
+      branchResult = await this.branchRepository.save({
+        ...branchResult,
+        idAll: branchResult.idAll + ',' + roomResult.id,
+      });
+    }
 
     let tagsResult = [];
     tags.forEach(async (el) => {
