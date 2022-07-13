@@ -53,7 +53,7 @@ export class AuthService {
     res.redirect('http://localhost:3000/main');
   }
 
-  async sendEmail({ email }) {
+  async sendEmail({ title, email, content }) {
     const EMAIL_USER = process.env.EMAIL_USER;
     const EMAIL_PASS = process.env.EMAIL_PASS;
     const EMAIL_SENDER = process.env.EMAIL_SENDER;
@@ -66,15 +66,14 @@ export class AuthService {
       },
     });
 
-    const token = this.getAuthNum();
-    const result = await transporter.sendMail({
+    await transporter.sendMail({
       from: EMAIL_SENDER,
       to: email,
-      subject: 'Shaki 인증번호',
-      html: token,
+      subject: title,
+      html: content,
     });
 
-    return token;
+    return content;
   }
 
   getAuthNum() {

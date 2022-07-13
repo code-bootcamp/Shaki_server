@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Room } from '../room/entities/room.entity';
 import { User } from './entities/user.entity';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
@@ -20,6 +21,28 @@ export class UserService {
       relations: ['room'],
     });
     return result;
+  }
+
+  async findPwd({ email, phone_num, name }) {
+    const findUser = await this.userRepository.findOne({
+      where: { email },
+    });
+
+    if (
+      findUser.email === email &&
+      findUser.name === name &&
+      findUser.phone_num === phone_num
+    ) {
+      const tempPwd = Math.random().toString(36).slice(2);
+      const hashedPwd = await bcrypt.hash(tempPwd, 10);
+
+      await this.userRepository.save({
+        ...findUser,
+        pwd: hashedPwd,
+      });
+
+      return tempPwd;
+    }
   }
 
   async create({ hashedPwd: pwd, ...userInfo }) {

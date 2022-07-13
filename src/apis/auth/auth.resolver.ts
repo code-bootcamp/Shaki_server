@@ -76,6 +76,8 @@ export class AuthResolver {
 
   @Mutation(() => Number)
   async checkEmail(@Args('email') email: string) {
-    return await this.authService.sendEmail({ email });
+    const title = 'Shaki 인증번호';
+    const content = this.authService.getAuthNum();
+    return await this.authService.sendEmail({ title, email, content });
   }
 }
