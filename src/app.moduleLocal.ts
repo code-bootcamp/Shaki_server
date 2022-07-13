@@ -12,6 +12,7 @@ import { PaymentModule } from './apis/payment/payment.module';
 import { BranchModule } from './apis/branch/branch.module';
 import { FileModule } from './apis/file/file.module';
 import { AuthModule } from './apis/auth/auth.module';
+import { QuestionModule } from './apis/question/question.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { AuthModule } from './apis/auth/auth.module';
       url: 'redis://shaki-redis:6379',
       isGlobal: true,
     }),
+    QuestionModule,
     HttpsModule,
     AuthModule,
     UserModule,
