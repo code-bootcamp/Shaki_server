@@ -14,6 +14,13 @@ export class QuestionResolver {
     return await this.questionService.findAll();
   }
 
+  @Query(() => Question)
+  async fetchQuestion(
+    @Args('id') id: string, //
+  ) {
+    return await this.questionService.findOne({ id });
+  }
+
   @Mutation(() => Question)
   async createQuestion(
     @Args('createQuestionInput') createQuestionInput: CreateQuestionInput,

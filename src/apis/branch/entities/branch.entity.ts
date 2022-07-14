@@ -14,7 +14,7 @@ import { Room } from '../../room/entities/room.entity';
 export class Branch {
   @PrimaryGeneratedColumn('uuid')
   @Field(() => String)
-  id: number;
+  id: string;
 
   @Column({ nullable: true })
   @Field(() => String)

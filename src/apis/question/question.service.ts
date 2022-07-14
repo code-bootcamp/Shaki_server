@@ -13,6 +13,10 @@ export class QuestionService {
     return await this.questionRepository.find();
   }
 
+  async findOne({ id }) {
+    return await this.questionRepository.findOne({ where: { id } });
+  }
+
   async create({ createQuestionInput }) {
     return await this.questionRepository.save({ ...createQuestionInput });
   }

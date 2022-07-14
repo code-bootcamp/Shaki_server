@@ -6,6 +6,10 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 export class Question {
   @PrimaryGeneratedColumn('uuid')
   @Field(() => String)
+  id: string;
+
+  @Column()
+  @Field(() => String)
   name: string;
 
   @Column()

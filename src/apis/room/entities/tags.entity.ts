@@ -14,7 +14,7 @@ import { Room } from './room.entity';
 export class Tags {
   @PrimaryGeneratedColumn('uuid')
   @Field(() => String)
-  id: number;
+  id: string;
 
   @Column()
   @Field(() => String)
