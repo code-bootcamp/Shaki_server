@@ -62,9 +62,7 @@ export class UserResolver {
     @Args('phone_num') phone_num: string, //
   ) {
     const content = await this.userService.findPwd({ email, name, phone_num });
-    console.log('-------------------');
-    console.log(content);
-    console.log('-------------------');
+
     const title = 'Shaki 임시 비밀번호';
     const result = await this.authService.sendEmail({ title, content, email });
     if (result) return true;

@@ -48,10 +48,11 @@ export class RoomService {
       });
     }
 
-    const roomResult = await this.roomRepository.save({
+    let roomResult = await this.roomRepository.save({
       ...items,
       branch: branchResult.id,
     });
+
     if (branchResult.idAll === null) {
       branchResult = await this.branchRepository.save({
         ...branchResult,
@@ -65,21 +66,29 @@ export class RoomService {
     }
 
     let tagsResult = [];
-    tags.forEach(async (el) => {
-      const tag = await this.tagsRepository.save({
-        branch: branchResult.id,
+    for (const el of tags) {
+      let tag = await this.tagsRepository.save({
+        room: roomResult.id,
         tag: el,
       });
+
       tagsResult.push(tag);
-    });
+    }
 
     let imagesResult = [];
-    images.forEach(async (el) => {
+    for (const el of images) {
       const url = await this.imagesRepository.save({
-        branch: branchResult.id,
+        room: roomResult.id,
         url: el,
       });
+
       imagesResult.push(url);
+    }
+
+    roomResult = await this.roomRepository.save({
+      ...roomResult,
+      images: imagesResult,
+      tags: tagsResult,
     });
 
     return roomResult.id;
