@@ -9,6 +9,11 @@ export class QuestionResolver {
     private readonly questionService: QuestionService, //
   ) {}
 
+  @Query(() => [Question])
+  async fetchQuestions() {
+    return await this.questionService.findAll();
+  }
+
   @Mutation(() => Question)
   async createQuestion(
     @Args('createQuestionInput') createQuestionInput: CreateQuestionInput,

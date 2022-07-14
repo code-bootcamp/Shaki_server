@@ -28,6 +28,12 @@ export class RoomService {
     });
   }
 
+  async findAll() {
+    return await this.roomRepository.find({
+      relations: ['images', 'tags', 'reviews', 'branch'],
+    });
+  }
+
   async findOne({ id }) {
     return await this.roomRepository.findOne({
       where: { id },

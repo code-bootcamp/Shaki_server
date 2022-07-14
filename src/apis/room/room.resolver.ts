@@ -21,6 +21,11 @@ export class RoomResolver {
     return await this.roomService.findOne({ id });
   }
 
+  @Query(() => [Room])
+  async fetchRooms() {
+    return await this.roomService.findAll();
+  }
+
   @Mutation(() => String)
   async createRoom(
     @Args('createRoom') createRoomInput: CreateRoomInput, //

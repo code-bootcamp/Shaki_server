@@ -9,6 +9,9 @@ export class QuestionService {
     @InjectRepository(Question)
     private readonly questionRepository: Repository<Question>, //
   ) {}
+  async findAll() {
+    return await this.questionRepository.find();
+  }
 
   async create({ createQuestionInput }) {
     return await this.questionRepository.save({ ...createQuestionInput });
