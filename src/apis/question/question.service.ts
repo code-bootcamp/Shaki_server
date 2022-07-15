@@ -28,16 +28,20 @@ export class QuestionService {
       where: { email },
     });
 
-    let questionResult = await this.questionRepository.save({
-      ...items,
-      user: userResult.id,
-    });
+    console.log(userResult);
+    // let questionResult;
+    // if (userResult) {
+    //   questionResult = await this.questionRepository.save({
+    //     ...items,
+    //     user: userResult.id,
+    //   });
+    // } else {
+    //   userResult = await this.userRepository.save({
+    //     ...userResult,
+    //     questions: questionResult,
+    //   });
+    // }
 
-    userResult = await this.userRepository.save({
-      ...userResult,
-      questions: questionResult,
-    });
-
-    return questionResult;
+    // return questionResult;
   }
 }
