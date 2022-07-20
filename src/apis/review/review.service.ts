@@ -17,6 +17,19 @@ export class ReivewService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
   ) {}
+  async find({ pageNum, roomId }) {
+    let skip = 0;
+    if (skip !== 1) skip = (pageNum - 1) * 10;
+    const result = await this.reviewRepository.find({
+      relations: ['room', 'user'],
+      where: { room: { id: roomId } },
+      order: { createAt: 'DESC' },
+      skip,
+      take: 10,
+    });
+
+    return result;
+  }
 
   async create({ email, createReviewInput }) {
     const { roomId, star, ...items } = createReviewInput;
@@ -29,8 +42,6 @@ export class ReivewService {
     const findUser = await this.userRepository.findOne({
       where: { email },
     });
-
-    console.log(findUser);
 
     const { usedPeople, starAmount, ...etc } = findRoom;
 

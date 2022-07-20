@@ -4,10 +4,12 @@ import { CreatePaymentInput } from './dto/createPayment.input';
 import { Payment } from './entities/payment.entity';
 import { PaymentService } from './payment.service';
 import * as jwt from 'jsonwebtoken';
+import { AuthService } from '../auth/auth.service';
 @Resolver()
 export class PaymentResolver {
   constructor(
     private readonly paymentService: PaymentService, //
+    private readonly authService: AuthService,
   ) {}
   @Query(() => [Payment])
   async fetchPayments() {
@@ -21,7 +23,7 @@ export class PaymentResolver {
     return await this.paymentService.findOne({ email });
   }
 
-  @Query(() => [Payment])
+  @Query(() => [String])
   async fetchReservation(
     @Args('room') id: string,
     @Args('date') date: string, //
@@ -34,14 +36,8 @@ export class PaymentResolver {
     @Args('createPaymentInput') createPaymentInput: CreatePaymentInput, //
     @Context() context: any,
   ) {
-    try {
-      const accessToken = context.req.headers.authorization.split(' ')[1];
-      const checkToken = jwt.verify(accessToken, 'accesskey');
-      const email = checkToken['email'];
-      return await this.paymentService.create({ createPaymentInput, email });
-    } catch {
-      throw new UnauthorizedException('유효하지 않은 토큰입니다.');
-    }
+    const email = await this.authService.accessTokenCheck({ context });
+    return await this.paymentService.create({ createPaymentInput, email });
   }
 
   @Mutation(() => Boolean)

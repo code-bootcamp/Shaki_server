@@ -15,6 +15,9 @@ export class CreatePaymentInput {
   end_time: string;
 
   @Field(() => Int)
+  point: number;
+
+  @Field(() => Int)
   amount: number;
 
   @Field(() => Int)

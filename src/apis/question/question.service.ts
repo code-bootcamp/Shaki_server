@@ -28,20 +28,18 @@ export class QuestionService {
       where: { email },
     });
 
-    console.log(userResult);
-    // let questionResult;
-    // if (userResult) {
-    //   questionResult = await this.questionRepository.save({
-    //     ...items,
-    //     user: userResult.id,
-    //   });
-    // } else {
-    //   userResult = await this.userRepository.save({
-    //     ...userResult,
-    //     questions: questionResult,
-    //   });
-    // }
+    let questionResult;
+    if (userResult) {
+      questionResult = await this.questionRepository.save({
+        ...createQuestionInput,
+        user: userResult.id,
+      });
+    } else {
+      questionResult = await this.questionRepository.save({
+        ...createQuestionInput,
+      });
+    }
 
-    // return questionResult;
+    return questionResult;
   }
 }

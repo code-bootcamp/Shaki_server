@@ -41,16 +41,16 @@ export class Payment {
   @Field(() => Int)
   guest: number;
 
+  @Column()
+  @Field(() => Int)
+  point: number;
+
   @CreateDateColumn()
   createdAt: Date;
 
   @ManyToOne(() => User)
   @Field(() => User)
   user: User;
-
-  @ManyToOne(() => Branch)
-  @Field(() => Branch)
-  branch: Branch;
 
   @ManyToOne(() => Room)
   @Field(() => Room)

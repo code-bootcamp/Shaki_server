@@ -14,4 +14,9 @@ export class FileResolver {
   ) {
     return await this.fileService.upload({ file });
   }
+
+  @Mutation(() => Boolean)
+  async removeFile(@Args('imageUrl') imageUrl: string) {
+    return await this.fileService.remove({ imageUrl });
+  }
 }

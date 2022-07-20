@@ -29,7 +29,6 @@ import { QuestionModule } from './apis/question/question.module';
       password: 'root',
       database: 'test',
       entities: [__dirname + '/apis/**/*.entity.*'],
-      timezone: '-09:00',
       synchronize: true,
       logging: true,
     }),

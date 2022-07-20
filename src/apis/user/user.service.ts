@@ -18,8 +18,9 @@ export class UserService {
   async findOne({ email }) {
     const result = await this.userRepository.findOne({
       where: { email },
-      relations: ['room'],
+      relations: ['room', 'payment'],
     });
+
     return result;
   }
 
@@ -63,12 +64,14 @@ export class UserService {
       where: { email },
       relations: ['room'],
     });
+
     let flag = true;
     findUser.room.forEach((el) => {
       if (el.id === room) {
         flag = false;
       }
     });
+
     if (flag) {
       const roomResult = [...findRoom, ...findUser.room];
 
@@ -79,7 +82,26 @@ export class UserService {
 
       return result;
     }
+
     return findUser;
+  }
+
+  async deletePick({ email, room }) {
+    const userResult = await this.userRepository.findOne({
+      where: { email },
+      relations: ['room'],
+    });
+
+    const userRoom = userResult.room.filter((el) => {
+      return el.id !== room;
+    });
+
+    const result = await this.userRepository.save({
+      ...userResult,
+      room: userRoom,
+    });
+
+    return result;
   }
 
   async findEmail({ name, phone_num }) {
