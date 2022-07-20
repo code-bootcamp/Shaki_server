@@ -19,9 +19,17 @@ export class PaymentService {
   ) {}
 
   async create({ createPaymentInput, email }) {
+    const { amount, ...items } = createPaymentInput;
+
     const findUser = await this.userRepository.findOne({
       where: { email },
+      relations: ['payment'],
     });
+
+    let paymentArray = [];
+    findUser.payment.map((el) => paymentArray.push(el));
+
+    const point = Math.round((amount - createPaymentInput.point) * 0.1);
 
     const result = await this.paymentRepository.save({
       ...createPaymentInput,
@@ -30,12 +38,28 @@ export class PaymentService {
       status: '결제',
     });
 
+    paymentArray.push(result);
+
+    if (!findUser.payment) {
+      await this.userRepository.save({
+        ...findUser,
+        point: findUser.point - createPaymentInput.point + point,
+        payment: [result],
+      });
+    } else {
+      await this.userRepository.save({
+        ...findUser,
+        point: findUser.point - createPaymentInput.point + point,
+        payment: paymentArray,
+      });
+    }
+
     return result;
   }
 
   async findAll() {
     const result = await this.paymentRepository.find({
-      relations: ['user', 'room'],
+      relations: ['user', 'room.branch'],
     });
     return result;
   }
@@ -43,12 +67,12 @@ export class PaymentService {
   async findOne({ email }) {
     return await this.paymentRepository.findOne({
       where: { id: email },
-      relations: ['user'],
+      relations: ['user', 'room.branch'],
     });
   }
 
   async usedTime({ id, date }) {
-    return await this.paymentRepository.find({
+    const findReservation = await this.paymentRepository.find({
       where: {
         date,
         room: {
@@ -57,12 +81,18 @@ export class PaymentService {
       },
       relations: ['room'],
     });
+
+    let result = [];
+    findReservation.map((el) => {
+      result.push(`${el.start_time} ~ ${el.end_time}`);
+    });
+    return result;
   }
 
   async cancelPayment({ impUid }) {
     const getToken = await this.iamportService.getToken();
-    console.log(getToken);
-    const getCancelData = await axios({
+
+    await axios({
       url: 'https://api.iamport.kr/payments/cancel',
       method: 'post',
       headers: {

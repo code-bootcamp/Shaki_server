@@ -2,6 +2,7 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { RoomService } from './room.service';
 import { CreateRoomInput } from './dto/createRoom.input';
 import { Room } from './entities/room.entity';
+import { UpdateRoomInput } from './dto/updateRoom.input';
 
 @Resolver()
 export class RoomResolver {
@@ -31,5 +32,20 @@ export class RoomResolver {
     @Args('createRoom') createRoomInput: CreateRoomInput, //
   ) {
     return await this.roomService.create({ createRoomInput });
+  }
+
+  @Mutation(() => Boolean)
+  async deleteRoom(
+    @Args('roomId') roomId: string, //
+  ) {
+    return await this.roomService.delete({ roomId });
+  }
+
+  @Mutation(() => Room)
+  async updateRoom(
+    @Args('roomId') roomId: string, //
+    @Args('updateRoomInput') updateRoomInput: UpdateRoomInput,
+  ) {
+    return await this.roomService.update({ roomId, updateRoomInput });
   }
 }

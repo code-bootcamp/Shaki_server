@@ -8,11 +8,6 @@ import {
   UnprocessableEntityException,
   UseGuards,
 } from '@nestjs/common';
-import {
-  GqlAuthAccessGuard,
-  GqlAuthRefreshGuard,
-} from 'src/commons/auth/gql-auth.guard';
-import { CurrentUser } from 'src/commons/auth/gql-user.param';
 import { UserService } from '../user/user.service';
 import { Cache } from 'cache-manager';
 import * as bcrypt from 'bcrypt';
@@ -31,53 +26,68 @@ export class AuthResolver {
   async login(
     @Args('email') email: string, //
     @Args('pwd') pwd: string,
+    @Context() context: any,
   ) {
     const user = await this.userService.findOne({ email });
-
     if (!user) throw new UnprocessableEntityException('이메일이 없습니다.');
 
     const isAuth = await bcrypt.compare(pwd, user.pwd);
-
     if (!isAuth) throw new UnprocessableEntityException('암호가 틀렸습니다.');
 
-    return this.authService.getAccessToken({ user });
+    await this.authService.getRefreshToKen({ email, res: context.req.res });
+    return await this.authService.getAccessToken({
+      email,
+      res: context.req.res,
+    });
   }
 
-  // @UseGuards(GqlAuthAccessGuard)
-  @Mutation(() => String)
-  async logout(@Context() context: any) {
-    console.log(context);
-    const accessToken = context.req.headers.authorization.replace(
-      'Bearer ',
-      '',
-    );
-    const refreshToken = context.req.headers.cookie.replace(
-      'refreshToken=',
-      '',
-    );
+  @Mutation(() => Boolean)
+  async logout(
+    @Context() context: any, //
+  ) {
+    const headers = context.req.headers;
+    let accessToken, refreshToken;
+    if (headers.authorization)
+      accessToken = context.req.headers.authorization.split(' ')[1];
+    if (headers.cookie) refreshToken = context.req.headers.cookie.split(' ')[1];
+
     try {
       const myAccess = jwt.verify(accessToken, 'accesskey');
       const myRefresh = jwt.verify(refreshToken, 'refreshkey');
-      await this.cacheManager.set(`accessToken:${accessToken}`, 'accessToken', {
+
+      await this.cacheManager.set(accessToken, 'accessToken', {
         ttl: myAccess['exp'] - myAccess['iat'],
       });
-      await this.cacheManager.set(
-        `refreshToken:${refreshToken}`,
-        'refreshToken',
-        {
-          ttl: myRefresh['exp'] - myRefresh['iat'],
-        },
-      );
+
+      await this.cacheManager.set(refreshToken, 'refreshToken', {
+        ttl: myRefresh['exp'] - myRefresh['iat'],
+      });
     } catch {
       throw new UnauthorizedException();
     }
-    return '로그아웃 되었습니다.';
+    return true;
   }
 
   @Mutation(() => Number)
   async checkEmail(@Args('email') email: string) {
     const title = 'Shaki 인증번호';
     const content = this.authService.getAuthNum();
-    return await this.authService.sendEmail({ title, email, content });
+    return await this.authService.sendEmail({
+      title,
+      email,
+      content,
+      replyContent: null,
+    });
+  }
+
+  @Mutation(() => String)
+  async restoreAccessToken(
+    @Context() context: any, //
+  ) {
+    const email = await this.authService.refreshTokenCheck({ context });
+    return await this.authService.getAccessToken({
+      email,
+      res: context.req.res,
+    });
   }
 }
