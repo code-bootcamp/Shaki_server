@@ -16,7 +16,7 @@ export class Branch {
   @Field(() => String)
   id: string;
 
-  @Column({ nullable: true })
+  @Column('text', { nullable: true })
   @Field(() => String)
   idAll: string;
 

@@ -8,7 +8,8 @@ export class FileService {
   async upload({ file }) {
     const storage = new Storage({
       projectId: process.env.GCP_STORAGE_PROJECTID,
-      keyFilename: process.env.GCP_STORAGE_KEYFILENAME,
+      // keyFilename: process.env.GCP_STORAGE_KEYFILENAME,
+      keyFilename: 'canvas-pathway-356414-d563349b4cc1.json',
     }).bucket(process.env.GCP_STORAGE_BUCKET);
 
     const filename = v4() + file.filename;
@@ -23,17 +24,17 @@ export class FileService {
     });
 
     url = 'https://storage.googleapis.com/' + url;
-    console.log(url);
     return url;
   }
 
   async remove({ imageUrl }) {
     try {
-      const url = imageUrl.split('/shaki-bucket/')[1];
+      const url = imageUrl.split('/shaki_bucket/')[1];
 
       const storage = new Storage({
         projectId: process.env.GCP_STORAGE_PROJECTID,
-        keyFilename: 'shaki-356123-b3fa263a9baf.json',
+        // keyFilename: process.env.GCP_STORAGE_KEYFILENAME,
+        keyFilename: 'canvas-pathway-356414-d563349b4cc1.json',
       }).bucket(process.env.GCP_STORAGE_BUCKET);
 
       await storage.file(url).delete();

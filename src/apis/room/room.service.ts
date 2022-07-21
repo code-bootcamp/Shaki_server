@@ -34,6 +34,7 @@ export class RoomService {
   async findAll() {
     return await this.roomRepository.find({
       relations: ['images', 'tags', 'reviews', 'branch'],
+      order: { updatedAt: 'DESC' },
     });
   }
 
@@ -145,43 +146,34 @@ export class RoomService {
       });
     });
 
-    tags.map(async (el) => {
+    for (const el of tags) {
       await this.tagsRepository.save({
+        room: roomId,
         tag: el,
-        room: roomResult,
       });
-    });
+    }
 
     const tagsResult = await this.tagsRepository.find({
       relations: ['room'],
       where: { room: { id: roomId } },
     });
 
-    let originImages = roomResult.images;
-    let newImages = images;
+    console.log(tagsResult);
 
-    let flag = false;
-
-    for (let i = 0; i < newImages.length; i++) {
-      for (let j = 0; j < originImages.length; j++) {
-        if (newImages[i] === originImages[j].url) {
-          flag = true;
-        }
-      }
-      if (!flag) {
-        await this.imagesRepository.save({
-          room: roomId,
-          url: newImages[i],
-        });
-      }
-
-      flag = false;
-    }
-
-    const imageResult = await this.imagesRepository.find({
-      relations: ['room'],
-      where: { room: { id: roomId } },
+    roomResult.images.map(async (el) => {
+      await this.imagesRepository.softDelete({
+        id: el.id,
+      });
     });
+
+    let imageResult = [];
+    for (const el of images) {
+      const image = await this.imagesRepository.save({
+        room: roomId,
+        url: el,
+      });
+      imageResult.push(image);
+    }
 
     let branchResult;
     if (branch !== roomResult.branch) {

@@ -27,26 +27,11 @@ export class AuthService {
     private readonly cacheManager: Cache,
   ) {}
 
-  getAccessToken({ email, res }) {
+  getAccessToken({ email }) {
     const accessToken = this.jwtService.sign(
       { email: email },
       { secret: process.env.ACCESS_KEY, expiresIn: '1h' },
     );
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
-    res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT');
-    res.setHeader(
-      'Access-Control-Allow-Headers',
-      'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers',
-    );
-
-    res.cookie('accessToken', accessToken, {
-      path: '/',
-      domain: '.shaki-server.shop',
-      httpOnly: true,
-      secure: true,
-      sameSite: 'none',
-    });
 
     return accessToken;
   }
@@ -56,6 +41,7 @@ export class AuthService {
       { email: email },
       { secret: process.env.REFRESH_KEY, expiresIn: '2w' },
     );
+
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
     res.setHeader('Access-Control-Allow-Credentials', 'true');
     res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT');
@@ -71,8 +57,6 @@ export class AuthService {
       secure: true,
       sameSite: 'none',
     });
-
-    return refreshToken;
   }
 
   async getUserInfo(req, res) {
@@ -131,17 +115,10 @@ export class AuthService {
 
   async accessTokenCheck({ context }) {
     try {
-      const array = context.req.headers.cookie.split('=');
-      let accessToken;
-      if (array[0] === 'refreshToken') {
-        accessToken = context.req.headers.cookie.split('=')[2];
-      } else {
-        accessToken = context.req.headers.cookie.split('=')[1].split(' ')[0];
-      }
+      let accessToken = context.req.headers.authorization.split(' ')[1];
       const logoutCheck = await this.cacheManager.get(accessToken);
       if (!logoutCheck) {
         const checkToken = jwt.verify(accessToken, process.env.ACCESS_KEY);
-        console.log(checkToken['email']);
         return checkToken['email'];
       } else {
         throw new UnauthorizedException('유효하지 않은 토큰입니다.');
@@ -153,13 +130,7 @@ export class AuthService {
 
   async refreshTokenCheck({ context }) {
     try {
-      const array = context.req.headers.cookie.split('=');
-      let refreshToken;
-      if (array[0] === 'refreshToken') {
-        refreshToken = context.req.headers.cookie.split('=')[1].split(' ')[0];
-      } else {
-        refreshToken = context.req.headers.cookie.split('=')[2];
-      }
+      const refreshToken = context.req.headers.cookie.split('=')[1];
       const logoutCheck = await this.cacheManager.get(refreshToken);
       if (!logoutCheck) {
         const checkToken = jwt.verify(refreshToken, process.env.REFRESH_KEY);
