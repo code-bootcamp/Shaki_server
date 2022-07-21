@@ -7,12 +7,12 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
 import * as nodemailer from 'nodemailer';
-import 'dotenv/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../user/entities/user.entity';
 import * as jwt from 'jsonwebtoken';
 import { Cache } from 'cache-manager';
+import 'dotenv/config';
 
 @Injectable()
 export class AuthService {
@@ -32,21 +32,23 @@ export class AuthService {
       { email: email },
       { secret: process.env.ACCESS_KEY, expiresIn: '1h' },
     );
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
-    res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT');
-    res.setHeader(
-      'Access-Control-Allow-Headers',
-      'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers',
-    );
+    // res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+    // res.setHeader('Access-Control-Allow-Credentials', 'true');
+    // res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT');
+    // res.setHeader(
+    //   'Access-Control-Allow-Headers',
+    //   'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers',
+    // );
 
-    res.cookie('accessToken', accessToken, {
-      path: '/',
-      domain: '.shaki-server.shop',
-      httpOnly: true,
-      secure: true,
-      sameSite: 'none',
-    });
+    // res.cookie('accessToken', accessToken, {
+    //   path: '/',
+    //   domain: '.shaki-server.shop',
+    //   httpOnly: true,
+    //   secure: true,
+    //   sameSite: 'none',
+    // });
+
+    const result = res.cookie('accessToken', accessToken);
 
     return accessToken;
   }
@@ -56,21 +58,23 @@ export class AuthService {
       { email: email },
       { secret: process.env.REFRESH_KEY, expiresIn: '2w' },
     );
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
-    res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT');
-    res.setHeader(
-      'Access-Control-Allow-Headers',
-      'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers',
-    );
+    // res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+    // res.setHeader('Access-Control-Allow-Credentials', 'true');
+    // res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT');
+    // res.setHeader(
+    //   'Access-Control-Allow-Headers',
+    //   'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers',
+    // );
 
-    res.cookie('refreshToken', refreshToken, {
-      path: '/',
-      domain: '.shaki-server.shop',
-      httpOnly: true,
-      secure: true,
-      sameSite: 'none',
-    });
+    // res.cookie('refreshToken', refreshToken, {
+    //   path: '/',
+    //   domain: '.shaki-server.shop',
+    //   httpOnly: true,
+    //   secure: true,
+    //   sameSite: 'none',
+    // });
+
+    res.cookie('refreshToken', refreshToken);
 
     return refreshToken;
   }

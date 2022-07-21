@@ -15,7 +15,7 @@ import {
 export class Review {
   @PrimaryGeneratedColumn('uuid')
   @Field(() => String)
-  id: number;
+  id: string;
 
   @Column()
   @Field(() => String)

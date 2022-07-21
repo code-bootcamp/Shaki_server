@@ -5,7 +5,7 @@ import { AppModuleLocal } from './app.moduleLocal';
 import { HttpExceptionFilter } from './commons/filter/http-exception.filter';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModuleLocal);
   app.useGlobalFilters(new HttpExceptionFilter());
   app.use(graphqlUploadExpress());
   app.enableCors({
