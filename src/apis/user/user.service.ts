@@ -18,7 +18,7 @@ export class UserService {
   async findOne({ email }) {
     const result = await this.userRepository.findOne({
       where: { email },
-      relations: ['room', 'payment'],
+      relations: ['room', 'payment', 'review'],
     });
 
     return result;
