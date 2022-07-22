@@ -6,9 +6,10 @@ import { Room } from './entities/room.entity';
 import { Images } from './entities/images.entity';
 import { Tags } from './entities/tags.entity';
 import { Branch } from '../branch/entities/branch.entity';
+import { FileService } from '../file/file.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Room, Tags, Images, Branch])],
-  providers: [RoomResolver, RoomService],
+  providers: [RoomResolver, RoomService, FileService],
 })
 export class RoomModule {}

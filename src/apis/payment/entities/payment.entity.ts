@@ -1,4 +1,6 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { Branch } from 'src/apis/branch/entities/branch.entity';
+import { Room } from 'src/apis/room/entities/room.entity';
 import { User } from 'src/apis/user/entities/user.entity';
 import {
   Column,
@@ -6,6 +8,7 @@ import {
   Entity,
   ManyToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity()
@@ -17,32 +20,43 @@ export class Payment {
 
   @Column()
   @Field(() => String)
-  email: string;
+  date: string;
 
   @Column()
   @Field(() => String)
-  type: string;
+  start_time: string;
 
   @Column()
   @Field(() => String)
-  buyer: string;
-
-  @Column()
-  @Field(() => String)
-  branch_name: string;
-
-  @Column()
-  @Field(() => String)
-  use_time: string;
+  end_time: string;
 
   @Column()
   @Field(() => Int)
   amount: Number;
 
+  @Column()
+  @Field(() => String)
+  status: string;
+
+  @Column()
+  @Field(() => Int)
+  guest: number;
+
+  @Column()
+  @Field(() => Int)
+  point: number;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
+
   @ManyToOne(() => User)
   @Field(() => User)
   user: User;
 
-  @CreateDateColumn()
-  createdAt: Date;
+  @ManyToOne(() => Room)
+  @Field(() => Room)
+  room: Room;
 }

@@ -6,10 +6,10 @@ import 'dotenv/config';
 @Injectable()
 export class FileService {
   async upload({ file }) {
-    console.log(file);
     const storage = new Storage({
       projectId: process.env.GCP_STORAGE_PROJECTID,
-      keyFilename: process.env.GCP_STORAGE_KEYFILENAME,
+      // keyFilename: process.env.GCP_STORAGE_KEYFILENAME,
+      keyFilename: 'canvas-pathway-356414-d563349b4cc1.json',
     }).bucket(process.env.GCP_STORAGE_BUCKET);
 
     const filename = v4() + file.filename;
@@ -25,5 +25,22 @@ export class FileService {
 
     url = 'https://storage.googleapis.com/' + url;
     return url;
+  }
+
+  async remove({ imageUrl }) {
+    try {
+      const url = imageUrl.split('/shaki_bucket/')[1];
+
+      const storage = new Storage({
+        projectId: process.env.GCP_STORAGE_PROJECTID,
+        // keyFilename: process.env.GCP_STORAGE_KEYFILENAME,
+        keyFilename: 'canvas-pathway-356414-d563349b4cc1.json',
+      }).bucket(process.env.GCP_STORAGE_BUCKET);
+
+      await storage.file(url).delete();
+      return true;
+    } catch {
+      return false;
+    }
   }
 }

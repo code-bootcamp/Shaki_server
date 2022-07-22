@@ -3,20 +3,23 @@ import { Field, InputType, Int } from '@nestjs/graphql';
 @InputType()
 export class CreatePaymentInput {
   @Field(() => String)
-  email: string;
+  roomId: string;
 
   @Field(() => String)
-  buyer: string;
+  date: string;
 
   @Field(() => String)
-  type: string;
+  start_time: string;
 
   @Field(() => String)
-  branch_name: string;
+  end_time: string;
 
-  @Field(() => String)
-  use_time: string;
+  @Field(() => Int)
+  point: number;
 
   @Field(() => Int)
   amount: number;
+
+  @Field(() => Int)
+  guest: number;
 }

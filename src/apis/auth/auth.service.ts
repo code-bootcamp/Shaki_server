@@ -1,11 +1,18 @@
-import { Injectable } from '@nestjs/common';
+import {
+  CACHE_MANAGER,
+  Inject,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
 import * as nodemailer from 'nodemailer';
-import 'dotenv/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from '../user/entities/user.entity';
+import * as jwt from 'jsonwebtoken';
+import { Cache } from 'cache-manager';
+import 'dotenv/config';
 
 @Injectable()
 export class AuthService {
@@ -15,31 +22,45 @@ export class AuthService {
 
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+
+    @Inject(CACHE_MANAGER)
+    private readonly cacheManager: Cache,
   ) {}
 
-  getAccessToken({ user }) {
+  getAccessToken({ email }) {
     const accessToken = this.jwtService.sign(
-      { email: user.email, name: user.name },
-      { secret: 'accesskey', expiresIn: '1h' },
+      { email: email },
+      { secret: process.env.ACCESS_KEY, expiresIn: '1h' },
     );
+
     return accessToken;
   }
 
-  getRefreshToKen({ user, res }) {
+  getRefreshToKen({ email, res }) {
     const refreshToken = this.jwtService.sign(
-      { email: user.email },
-      { secret: 'refreshkey', expiresIn: '2w' },
+      { email: email },
+      { secret: process.env.REFRESH_KEY, expiresIn: '2w' },
     );
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT');
     res.setHeader(
-      'Set-Cookie',
-      `refreshToken=${refreshToken}; path=/; domain=.shakiback.shop; SameSite=None; Secure; httpOnly;`,
+      'Access-Control-Allow-Headers',
+      'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers',
     );
+
+    res.cookie('refreshToken', refreshToken, {
+      path: '/',
+      domain: '.shaki-server.shop',
+      httpOnly: true,
+      secure: true,
+      sameSite: 'none',
+    });
   }
 
   async getUserInfo(req, res) {
     let user = await this.userService.findOne({ email: req.user.email });
 
-    // 2. 회원가입
     if (!user) {
       user = await this.userRepository.save({
         email: req.user.email,
@@ -47,13 +68,11 @@ export class AuthService {
       });
     }
 
-    // 3. 로그인
-
-    this.getRefreshToKen({ user, res });
+    this.getRefreshToKen({ email: user.email, res });
     res.redirect('http://localhost:3000/main');
   }
 
-  async sendEmail({ title, email, content }) {
+  async sendEmail({ title, email, content, replyContent }) {
     const EMAIL_USER = process.env.EMAIL_USER;
     const EMAIL_PASS = process.env.EMAIL_PASS;
     const EMAIL_SENDER = process.env.EMAIL_SENDER;
@@ -66,17 +85,60 @@ export class AuthService {
       },
     });
 
-    await transporter.sendMail({
-      from: EMAIL_SENDER,
-      to: email,
-      subject: title,
-      html: content,
-    });
+    if (replyContent === null) {
+      await transporter.sendMail({
+        from: EMAIL_SENDER,
+        to: email,
+        subject: title,
+        html: content,
+      });
+    } else {
+      await transporter.sendMail({
+        from: EMAIL_SENDER,
+        to: email,
+        subject: title,
+        html: `
+        ${content}
+        ---------------------------
+        ${replyContent}
+        `,
+      });
+    }
 
     return content;
   }
 
   getAuthNum() {
     return String(Math.floor(Math.random() * 10 ** 6)).padStart(6, '0');
+  }
+
+  async accessTokenCheck({ context }) {
+    try {
+      let accessToken = context.req.headers.authorization.split(' ')[1];
+      const logoutCheck = await this.cacheManager.get(accessToken);
+      if (!logoutCheck) {
+        const checkToken = jwt.verify(accessToken, process.env.ACCESS_KEY);
+        return checkToken['email'];
+      } else {
+        throw new UnauthorizedException('유효하지 않은 토큰입니다.');
+      }
+    } catch {
+      throw new UnauthorizedException('유효하지 않은 토큰입니다.');
+    }
+  }
+
+  async refreshTokenCheck({ context }) {
+    try {
+      const refreshToken = context.req.headers.cookie.split('=')[1];
+      const logoutCheck = await this.cacheManager.get(refreshToken);
+      if (!logoutCheck) {
+        const checkToken = jwt.verify(refreshToken, process.env.REFRESH_KEY);
+        return checkToken['email'];
+      } else {
+        throw new UnauthorizedException('유효하지 않은 토큰입니다.');
+      }
+    } catch {
+      throw new UnauthorizedException('유효하지 않은 토큰입니다.');
+    }
   }
 }

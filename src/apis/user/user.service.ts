@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Room } from '../room/entities/room.entity';
@@ -18,8 +18,9 @@ export class UserService {
   async findOne({ email }) {
     const result = await this.userRepository.findOne({
       where: { email },
-      relations: ['room'],
+      relations: ['room', 'payment'],
     });
+
     return result;
   }
 
@@ -63,12 +64,14 @@ export class UserService {
       where: { email },
       relations: ['room'],
     });
+
     let flag = true;
     findUser.room.forEach((el) => {
       if (el.id === room) {
         flag = false;
       }
     });
+
     if (flag) {
       const roomResult = [...findRoom, ...findUser.room];
 
@@ -79,7 +82,26 @@ export class UserService {
 
       return result;
     }
+
     return findUser;
+  }
+
+  async deletePick({ email, room }) {
+    const userResult = await this.userRepository.findOne({
+      where: { email },
+      relations: ['room'],
+    });
+
+    const userRoom = userResult.room.filter((el) => {
+      return el.id !== room;
+    });
+
+    const result = await this.userRepository.save({
+      ...userResult,
+      room: userRoom,
+    });
+
+    return result;
   }
 
   async findEmail({ name, phone_num }) {
@@ -92,5 +114,34 @@ export class UserService {
     }
 
     return '불일치';
+  }
+
+  async findUserNum() {
+    return await this.userRepository.count();
+  }
+
+  async update({ updateUserInput }) {
+    try {
+      const { originPwd, newPwd, ...items } = updateUserInput;
+
+      const findUser = await this.userRepository.findOne({
+        where: { email: updateUserInput.email },
+      });
+
+      const isAuth = await bcrypt.compare(originPwd, findUser.pwd);
+      if (isAuth) {
+        const hashedPwd = await bcrypt.hash(newPwd, 10);
+
+        return await this.userRepository.save({
+          ...findUser,
+          ...items,
+          pwd: hashedPwd,
+        });
+      } else {
+        throw new UnprocessableEntityException('비밀번호가 일치하지 않습니다.');
+      }
+    } catch {
+      throw new UnprocessableEntityException();
+    }
   }
 }
