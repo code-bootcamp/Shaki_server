@@ -63,4 +63,35 @@ export class ReivewService {
 
     return true;
   }
+
+  async delete({ reviewId }) {
+    const findReview = await this.reviewRepository.findOne({
+      where: { id: reviewId },
+      relations: ['room'],
+    });
+
+    const findRoom = await this.roomRepository.findOne({
+      where: { id: findReview.room.id },
+      relations: ['reviews'],
+    });
+
+    const starAmountResult = findRoom.starAmount - findReview.star;
+
+    const usedPeopleResult = findRoom.usedPeople - 1;
+
+    const starResult = (starAmountResult / usedPeopleResult).toFixed(1);
+
+    await this.roomRepository.save({
+      ...findRoom,
+      star: Number(starResult),
+      starAmount: starAmountResult,
+      usedPeople: usedPeopleResult,
+    });
+
+    await this.reviewRepository.softDelete({
+      id: reviewId,
+    });
+
+    return true;
+  }
 }

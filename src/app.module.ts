@@ -26,11 +26,11 @@ import { QuestionModule } from './apis/question/question.module';
     }),
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: '10.35.240.3',
+      host: '10.53.144.4',
       port: 3306,
       username: 'root',
       password: 'root',
-      database: 'test',
+      database: 'myproject',
       entities: [__dirname + '/apis/**/*.entity.*'],
       synchronize: true,
       logging: true,

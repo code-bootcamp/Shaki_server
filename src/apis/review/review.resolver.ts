@@ -1,8 +1,6 @@
-import { UnauthorizedException } from '@nestjs/common';
 import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CreateReviewInput } from './dto/createReview.input';
 import { ReivewService } from './review.service';
-import * as jwt from 'jsonwebtoken';
 import { Review } from './entities/review.entity';
 import { AuthService } from '../auth/auth.service';
 
@@ -27,5 +25,14 @@ export class ReivewResolver {
   ) {
     const email = await this.authService.accessTokenCheck({ context });
     return await this.reviewService.create({ email, createReviewInput });
+  }
+
+  // @Mutation(() => )
+
+  @Mutation(() => Boolean)
+  async deleteReview(
+    @Args('reviewId') reviewId: string, //
+  ) {
+    return this.reviewService.delete({ reviewId });
   }
 }

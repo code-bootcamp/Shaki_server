@@ -35,6 +35,7 @@ export class AuthResolver {
     const isAuth = await bcrypt.compare(pwd, user.pwd);
     if (!isAuth) throw new UnprocessableEntityException('암호가 틀렸습니다.');
 
+
     await this.authService.getRefreshToKen({ email, res: context.req.res });
     return await this.authService.getAccessToken({ email });
   }
