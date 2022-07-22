@@ -1,5 +1,5 @@
 import { UnauthorizedException } from '@nestjs/common';
-import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Context, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CreatePaymentInput } from './dto/createPayment.input';
 import { Payment } from './entities/payment.entity';
 import { PaymentService } from './payment.service';
@@ -29,6 +29,11 @@ export class PaymentResolver {
     @Args('date') date: string, //
   ) {
     return this.paymentService.usedTime({ id, date });
+  }
+
+  @Query(() => Int)
+  async fetchPaymentSum() {
+    return this.paymentService.findSum();
   }
 
   @Mutation(() => Payment)

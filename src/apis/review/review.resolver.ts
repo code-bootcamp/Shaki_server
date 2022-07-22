@@ -27,8 +27,6 @@ export class ReivewResolver {
     return await this.reviewService.create({ email, createReviewInput });
   }
 
-  // @Mutation(() => )
-
   @Mutation(() => Boolean)
   async deleteReview(
     @Args('reviewId') reviewId: string, //

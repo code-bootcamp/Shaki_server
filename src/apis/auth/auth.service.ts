@@ -41,7 +41,6 @@ export class AuthService {
       { email: email },
       { secret: process.env.REFRESH_KEY, expiresIn: '2w' },
     );
-
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
     res.setHeader('Access-Control-Allow-Credentials', 'true');
     res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT');

@@ -103,6 +103,18 @@ export class PaymentService {
       },
     });
 
+    await this.paymentRepository.softDelete
+
     return true;
+  }
+
+  async findSum() {
+    const result = await this.paymentRepository
+      .createQueryBuilder('payment')
+      .select('SUM(amount)', 'sum')
+      .where({ status: '결제' })
+      .getRawMany();
+
+    return Number(result[0].sum);
   }
 }
