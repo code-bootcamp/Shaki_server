@@ -11,6 +11,7 @@ import {
 import { UserService } from '../user/user.service';
 import { Cache } from 'cache-manager';
 import * as bcrypt from 'bcrypt';
+import 'dotenv/config';
 
 @Resolver()
 export class AuthResolver {
@@ -34,11 +35,8 @@ export class AuthResolver {
     const isAuth = await bcrypt.compare(pwd, user.pwd);
     if (!isAuth) throw new UnprocessableEntityException('암호가 틀렸습니다.');
 
-    // await this.authService.getRefreshToKen({ email, res: context.req.res });
-    return await this.authService.getAccessToken({
-      email,
-      res: context.req.res,
-    });
+    await this.authService.getRefreshToKen({ email, res: context.req.res });
+    return await this.authService.getAccessToken({ email });
   }
 
   @Mutation(() => Boolean)
@@ -49,11 +47,11 @@ export class AuthResolver {
     let accessToken, refreshToken;
     if (headers.authorization)
       accessToken = context.req.headers.authorization.split(' ')[1];
-    if (headers.cookie) refreshToken = context.req.headers.cookie.split(' ')[1];
+    if (headers.cookie) refreshToken = context.req.headers.cookie.split('=')[1];
 
     try {
-      const myAccess = jwt.verify(accessToken, 'accesskey');
-      const myRefresh = jwt.verify(refreshToken, 'refreshkey');
+      const myAccess = jwt.verify(accessToken, process.env.ACCESS_KEY);
+      const myRefresh = jwt.verify(refreshToken, process.env.REFRESH_KEY);
 
       await this.cacheManager.set(accessToken, 'accessToken', {
         ttl: myAccess['exp'] - myAccess['iat'],
@@ -85,9 +83,6 @@ export class AuthResolver {
     @Context() context: any, //
   ) {
     const email = await this.authService.refreshTokenCheck({ context });
-    return await this.authService.getAccessToken({
-      email,
-      res: context.req.res,
-    });
+    return await this.authService.getAccessToken({ email });
   }
 }

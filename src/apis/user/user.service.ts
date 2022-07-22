@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Room } from '../room/entities/room.entity';
@@ -114,5 +114,34 @@ export class UserService {
     }
 
     return '불일치';
+  }
+
+  async findUserNum() {
+    return await this.userRepository.count();
+  }
+
+  async update({ updateUserInput }) {
+    try {
+      const { originPwd, newPwd, ...items } = updateUserInput;
+
+      const findUser = await this.userRepository.findOne({
+        where: { email: updateUserInput.email },
+      });
+
+      const isAuth = await bcrypt.compare(originPwd, findUser.pwd);
+      if (isAuth) {
+        const hashedPwd = await bcrypt.hash(newPwd, 10);
+
+        return await this.userRepository.save({
+          ...findUser,
+          ...items,
+          pwd: hashedPwd,
+        });
+      } else {
+        throw new UnprocessableEntityException('비밀번호가 일치하지 않습니다.');
+      }
+    } catch {
+      throw new UnprocessableEntityException();
+    }
   }
 }

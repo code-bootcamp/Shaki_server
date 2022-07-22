@@ -27,12 +27,19 @@ export class ReivewResolver {
     return await this.reviewService.create({ email, createReviewInput });
   }
 
-  // @Mutation(() => )
-
   @Mutation(() => Boolean)
   async deleteReview(
     @Args('reviewId') reviewId: string, //
   ) {
     return this.reviewService.delete({ reviewId });
+  }
+
+  @Mutation(() => Boolean)
+  async updateReview(
+    @Args('reviewId') reviewId: string, //
+    @Args('star') star: number,
+    @Args('content') content: string,
+  ) {
+    return this.reviewService.update({ reviewId, star, content });
   }
 }

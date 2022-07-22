@@ -94,4 +94,33 @@ export class ReivewService {
 
     return true;
   }
+
+  async update({ reviewId, star, content }) {
+    const findReview = await this.reviewRepository.findOne({
+      where: { id: reviewId },
+      relations: ['room'],
+    });
+
+    const findRoom = await this.roomRepository.findOne({
+      where: { id: findReview.room.id },
+      relations: ['reviews'],
+    });
+
+    const starAmountResult =
+      findRoom.starAmount + (findReview.star - findRoom.star);
+
+    const usedPeopleResult = findRoom.usedPeople;
+
+    const starResult = (starAmountResult / usedPeopleResult).toFixed(1);
+
+    await this.reviewRepository.save({
+      ...findReview,
+      content,
+      star: Number(starResult),
+      starAmount: starAmountResult,
+      usedPeople: usedPeopleResult,
+    });
+
+    return true;
+  }
 }
