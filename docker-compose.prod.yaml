@@ -2,9 +2,9 @@ version: '3.7'
 
 services:
   shaki-backend:
-    image: asia.gcr.io/canvas-pathway-356414/shaki-registry:65
+    image: asia.gcr.io/canvas-pathway-356414/shaki-registry:75
     build:
       context: .
       dockerfile: Dockerfile.prod
     ports:
-      - 3001:3001
+      - 3000:3000

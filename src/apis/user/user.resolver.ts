@@ -1,12 +1,10 @@
-import { UnauthorizedException, UseGuards } from '@nestjs/common';
-import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { GqlAuthAccessGuard } from 'src/commons/auth/gql-auth.guard';
+import { Args, Context, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CreateUserInput } from './dto/createUser.input';
 import { User } from './entities/user.entity';
 import { UserService } from './user.service';
 import * as bcrypt from 'bcrypt';
-import * as jwt from 'jsonwebtoken';
 import { AuthService } from '../auth/auth.service';
+import { UpdateUserInput } from './dto/updateUser.input';
 
 @Resolver()
 export class UserResolver {
@@ -31,6 +29,11 @@ export class UserResolver {
     return await this.userService.findOne({ email });
   }
 
+  @Query(() => Int)
+  async fetchUserNum() {
+    return await this.userService.findUserNum();
+  }
+
   @Mutation(() => User)
   async createUser(
     @Args('createUserInput') createUserInput: CreateUserInput, //
@@ -38,6 +41,15 @@ export class UserResolver {
     const { pwd, ...userInfo } = createUserInput;
     const hashedPwd = await bcrypt.hash(pwd, 10);
     return this.userService.create({ hashedPwd, ...userInfo });
+  }
+
+  @Mutation(() => User)
+  async updateUser(
+    @Context() context: any,
+    @Args('updateUserInput') updateUserInput: UpdateUserInput, //
+  ) {
+    const result = await this.authService.accessTokenCheck({ context });
+    if (result) return await this.userService.update({ updateUserInput });
   }
 
   @Mutation(() => User)
