@@ -79,7 +79,12 @@ export class ReivewService {
 
     const usedPeopleResult = findRoom.usedPeople - 1;
 
-    const starResult = (starAmountResult / usedPeopleResult).toFixed(1);
+    let starResult;
+    if (starAmountResult !== 0 && usedPeopleResult !== 0) {
+      starResult = (starAmountResult / usedPeopleResult).toFixed(1);
+    } else {
+      starResult = 0;
+    }
 
     await this.roomRepository.save({
       ...findRoom,
