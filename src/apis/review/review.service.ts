@@ -113,12 +113,17 @@ export class ReivewService {
 
     const starResult = (starAmountResult / usedPeopleResult).toFixed(1);
 
-    await this.reviewRepository.save({
-      ...findReview,
-      content,
+    await this.roomRepository.save({
+      ...findRoom,
       star: Number(starResult),
       starAmount: starAmountResult,
       usedPeople: usedPeopleResult,
+    });
+
+    await this.reviewRepository.save({
+      ...findReview,
+      star,
+      content,
     });
 
     return true;
