@@ -60,10 +60,11 @@ export class AuthResolver {
       await this.cacheManager.set(refreshToken, 'refreshToken', {
         ttl: myRefresh['exp'] - myRefresh['iat'],
       });
+
+      return true;
     } catch {
       throw new UnauthorizedException();
     }
-    return true;
   }
 
   @Mutation(() => Number)

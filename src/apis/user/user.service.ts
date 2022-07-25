@@ -18,7 +18,7 @@ export class UserService {
   async findOne({ email }) {
     const result = await this.userRepository.findOne({
       where: { email },
-      relations: ['room', 'payment', 'review'],
+      relations: ['room', 'payment.room', 'review'],
     });
 
     return result;
@@ -43,6 +43,8 @@ export class UserService {
       });
 
       return tempPwd;
+    } else {
+      return false;
     }
   }
 

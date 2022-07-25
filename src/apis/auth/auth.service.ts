@@ -41,21 +41,24 @@ export class AuthService {
       { email: email },
       { secret: process.env.REFRESH_KEY, expiresIn: '2w' },
     );
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
-    res.setHeader('Access-Control-Allow-Credentials', 'true');
-    res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT');
-    res.setHeader(
-      'Access-Control-Allow-Headers',
-      'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers',
-    );
 
-    res.cookie('refreshToken', refreshToken, {
-      path: '/',
-      domain: '.shaki-server.shop',
-      httpOnly: true,
-      secure: true,
-      sameSite: 'none',
-    });
+    res.cookie('refreshToken', refreshToken);
+
+    // res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+    // res.setHeader('Access-Control-Allow-Credentials', 'true');
+    // res.setHeader('Access-Control-Allow-Methods', 'GET,HEAD,OPTIONS,POST,PUT');
+    // res.setHeader(
+    //   'Access-Control-Allow-Headers',
+    //   'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers',
+    // );
+
+    // res.cookie('refreshToken', refreshToken, {
+    //   path: '/',
+    //   domain: '.shaki-server.shop',
+    //   httpOnly: true,
+    //   secure: true,
+    //   sameSite: 'none',
+    // });
   }
 
   async getUserInfo(req, res) {
@@ -115,7 +118,9 @@ export class AuthService {
   async accessTokenCheck({ context }) {
     try {
       let accessToken = context.req.headers.authorization.split(' ')[1];
+      console.log(accessToken);
       const logoutCheck = await this.cacheManager.get(accessToken);
+
       if (!logoutCheck) {
         const checkToken = jwt.verify(accessToken, process.env.ACCESS_KEY);
         return checkToken['email'];
