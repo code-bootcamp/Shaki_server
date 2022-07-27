@@ -5,10 +5,17 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
-  ManyToOne,
 } from 'typeorm';
-import { Room } from '../../room/entities/room.entity';
 
+/* =======================================================================
+ *  TYPE : Entity
+ *  Class : Branch
+ *  UpdatedAt : 2022-07-25
+ *  Description : 지점에 대한 데이터를 저장하기 위한 entity
+ *  Content :
+ *    [ Column && Field ] : id, idAll(지점 전체 방 idx 모음),
+ *                          branch(지점명), updatedAt, deletedAt
+ * ======================================================================= */
 @Entity()
 @ObjectType()
 export class Branch {
