@@ -1,7 +1,7 @@
 import { Test } from '@nestjs/testing';
+import { BranchService } from '../branch.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Room } from 'src/apis/room/entities/room.entity';
-import { BranchService } from '../branch.service';
 
 class MockRoomRepository {
   roomdb = [

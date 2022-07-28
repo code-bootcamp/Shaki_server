@@ -54,6 +54,7 @@ export class AuthResolver {
     const refreshToken = await this.authService.getRefreshToKen({
       email,
       res: context.req.res,
+      req: context.req,
     });
 
     if (refreshToken) {

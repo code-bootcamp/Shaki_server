@@ -1,7 +1,6 @@
 import { Test } from '@nestjs/testing';
-import { BranchResolver } from '../branch.resolver';
 import { BranchService } from '../branch.service';
-
+import { BranchResolver } from '../branch.resolver';
 class MockBranchService {
   find() {
     return [
@@ -28,6 +27,7 @@ class MockBranchService {
     ];
   }
 }
+
 describe('BranchResolver', () => {
   let branchResolver: BranchResolver;
 

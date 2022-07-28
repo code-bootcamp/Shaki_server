@@ -20,7 +20,7 @@ import { QuestionModule } from './apis/question/question.module';
       autoSchemaFile: 'src/commons/graphql/schema.gql',
       context: ({ req, res }) => ({ req, res }),
       cors: {
-        origin: 'http://localhost:3000',
+        origin: ['http://localhost:3000', 'https://sha-ki.shop'],
         credentials: true,
       },
     }),

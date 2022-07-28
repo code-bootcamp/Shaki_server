@@ -65,7 +65,7 @@ export class AuthService {
     return accessToken;
   }
 
-  getRefreshToKen({ email, res }) {
+  getRefreshToKen({ email, res, req }) {
     try {
       const refreshToken = this.jwtService.sign(
         { email: email },
@@ -75,6 +75,12 @@ export class AuthService {
       // res.cookie('refreshToken', refreshToken);
 
       res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+      const allowedOrigins = ['https://sha-ki.shop', 'http://localhost:3000'];
+      const origin = req.headers.origin;
+      if (allowedOrigins.includes(origin)) {
+        res.setHeader('Access-Control-Allow-Origin', origin);
+      }
+
       res.setHeader('Access-Control-Allow-Credentials', 'true');
       res.setHeader(
         'Access-Control-Allow-Methods',
@@ -109,8 +115,8 @@ export class AuthService {
       });
     }
 
-    this.getRefreshToKen({ email: user.email, res });
-    res.redirect('http://localhost:3000/main');
+    this.getRefreshToKen({ email: user.email, res, req });
+    res.redirect('https://sha-ki.shop/main');
   }
 
   async sendEmail({ title, email, content, replyContent }) {
