@@ -116,8 +116,6 @@ export class AuthResolver {
     @Context() context: any, //
   ) {
     const email = await this.authService.refreshTokenCheck({ context });
-
-    const result = await this.authService.getAccessToken({ email });
-    return result;
+    return await this.authService.getAccessToken({ email });
   }
 }

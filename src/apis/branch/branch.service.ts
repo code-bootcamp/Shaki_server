@@ -37,6 +37,7 @@ export class BranchService {
         if (currentStar > saveStar) result[branch.get(el.branch.branch)] = el;
       }
     });
+
     return result;
   }
 }
