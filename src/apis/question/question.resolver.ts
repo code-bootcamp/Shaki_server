@@ -1,9 +1,9 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { AuthService } from '../auth/auth.service';
-import { CreateQuestionInput } from './dto/createQuestion.input';
-import { ReplyQuestionInput } from './dto/replyQestion.input';
-import { Question } from './entities/question.entity';
 import { QuestionService } from './question.service';
+import { Question } from './entities/question.entity';
+import { ReplyQuestionInput } from './dto/replyQuestion.input';
+import { CreateQuestionInput } from './dto/createQuestion.input';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
 /* =======================================================================
  *  TYPE : Resolver
