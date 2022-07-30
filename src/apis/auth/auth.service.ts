@@ -73,8 +73,6 @@ export class AuthService {
       );
 
       // res.cookie('refreshToken', refreshToken);
-
-      res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
       const allowedOrigins = ['https://sha-ki.shop', 'http://localhost:3000'];
       const origin = req.headers.origin;
       if (allowedOrigins.includes(origin)) {

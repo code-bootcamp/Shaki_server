@@ -1,20 +1,33 @@
-import { Field, Int, ObjectType, Float } from '@nestjs/graphql';
-import { Review } from 'src/apis/review/entities/review.entity';
-import { User } from 'src/apis/user/entities/user.entity';
 import {
   Column,
-  DeleteDateColumn,
   Entity,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
   OneToMany,
   ManyToOne,
   JoinTable,
   ManyToMany,
+  DeleteDateColumn,
+  UpdateDateColumn,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Branch } from '../../branch/entities/branch.entity';
-import { Images } from './images.entity';
 import { Tags } from './tags.entity';
+import { Images } from './images.entity';
+import { User } from 'src/apis/user/entities/user.entity';
+import { Branch } from '../../branch/entities/branch.entity';
+import { Field, Int, ObjectType, Float } from '@nestjs/graphql';
+import { Review } from 'src/apis/review/entities/review.entity';
+
+/* =======================================================================
+ *  TYPE : Entity
+ *  Class : Room
+ *  UpdatedAt : 2022-07-30
+ *  Description : 방에 대한 데이터를 저장하기 위한 entity
+ *  Content :
+ *    [ Column && Field ] : id, usedPeople(사용자 수), starAmount, remarks,
+ *                          name, price, maxPeople(사용 가능 인원), contents
+ *                          star, zipcode, address, conaddressDetail
+ *                          updatedAt, deletedAt, images, tags, reviews
+ *                          branch, user
+ * ======================================================================= */
 
 @Entity()
 @ObjectType()

@@ -1,7 +1,16 @@
-import { UnprocessableEntityException } from '@nestjs/common';
-import axios from 'axios';
 import 'dotenv/config';
+import axios from 'axios';
+import { UnprocessableEntityException } from '@nestjs/common';
 
+/* =======================================================================
+ *  TYPE : Service
+ *  Class : IamportService
+ *  UpdatedAt : 2022-07-28
+ *  Description : Impoart 결제 및 환불을 위한 token 사용 함수
+ *  Content :
+ *    getToken [ null => String ] : Iamport 토큰 발급
+ *    checkToken [ impUid: string =>  ] : Iamport 접근 토큰 확인
+ * ======================================================================= */
 export class IamportService {
   async getToken() {
     const getToken = await axios({

@@ -1,10 +1,27 @@
+import axios from 'axios';
+import { Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { IamportService } from '../iamport/iamport.service';
 import { User } from '../user/entities/user.entity';
 import { Payment } from './entities/payment.entity';
-import axios from 'axios';
+import { IamportService } from '../iamport/iamport.service';
+
+/* =======================================================================
+ *  TYPE : Service
+ *  Class : PaymentService
+ *  UpdatedAt : 2022-07-28
+ *  Description : 권한 API에 필요한 각종 함수 설정
+ *  Constructor : Repository<Payment, User>, IamportService
+ *  Content :
+ *    create    [ createPaymentInput: CreatePaymentInput, => Payment ]
+ *                  : 결제 내역 저장 함수
+ *
+ *    findAll   [ null => [Payment] ] : 젠체 결제내역 조회 함수
+ *    findOne   [ email: string => Payment ] : 특정 결제내역 한개 조회 함수
+ *    usedTime  [ id: string, date: string => [String] ] : 날짜별 예약 시간조회
+ *    cancelPayment   [ impUid: string => Boolean ] : 결제내역 환불 요청
+ *    findSum   [ null => Int ] : 결제 금액 총 합계 조회
+ * ======================================================================= */
 
 @Injectable()
 export class PaymentService {
@@ -40,16 +57,21 @@ export class PaymentService {
 
     paymentArray.push(result);
 
+    let pointResult = findUser.point - createPaymentInput.point + point;
+    if (pointResult < 0) {
+      pointResult = 0;
+    }
+
     if (!findUser.payment) {
       await this.userRepository.save({
         ...findUser,
-        point: findUser.point - createPaymentInput.point + point,
+        point: pointResult,
         payment: [result],
       });
     } else {
       await this.userRepository.save({
         ...findUser,
-        point: findUser.point - createPaymentInput.point + point,
+        point: pointResult,
         payment: paymentArray,
       });
     }
@@ -103,7 +125,7 @@ export class PaymentService {
       },
     });
 
-    await this.paymentRepository.softDelete
+    await this.paymentRepository.softDelete;
 
     return true;
   }

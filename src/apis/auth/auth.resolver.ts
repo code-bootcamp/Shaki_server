@@ -94,7 +94,7 @@ export class AuthResolver {
 
   @Mutation(() => String)
   async checkEmail(@Args('email') email: string) {
-    const check = this.userService.findOne({ email });
+    const check = await this.userService.findOne({ email });
     if (!check) {
       const title = 'Shaki 인증번호';
       const content = this.authService.getAuthNum();
@@ -107,7 +107,7 @@ export class AuthResolver {
 
       return result;
     } else {
-      return '이미 등록된 이메일입니다.';
+      throw new InternalServerErrorException('이미 등록된 이메일입니다.');
     }
   }
 

@@ -9,8 +9,8 @@ import 'dotenv/config';
  *  UpdatedAt : 2022-07-25
  *  Description : 파일(이미지) API에 필요한 각종 함수 설정
  *  Content :
- *      [ Function => String  ] : upload - 이미지 GCP STORAGE에 저장
- *      [ Function => Boolean ] : remove - GCP STORAGE에 저장된 이미지 삭제
+ *    upload  [ file: string => String  ] : 이미지 GCP STORAGE에 저장
+ *    remove  [ imageUrl: string => Boolean ] : GCP STORAGE에 저장된 이미지 삭제
  * ======================================================================= */
 
 @Injectable()

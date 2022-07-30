@@ -5,6 +5,24 @@ import { ReplyQuestionInput } from './dto/replyQestion.input';
 import { Question } from './entities/question.entity';
 import { QuestionService } from './question.service';
 
+/* =======================================================================
+ *  TYPE : Resolver
+ *  Class : QuestionResolver
+ *  UpdatedAt : 2022-07-28
+ *  Description : 질문에 대한 API 설정
+ *  Constructor : QuestionService, AuthService
+ *  Content :
+ *   [ Query ]
+ *     fetchQuestions     [ null => [Question] ] : 전체 질문 내용 조회
+ *     fetchQuestion      [ id: string => Question ] : 특정 질문 내용 1개 조회
+ *
+ *   [ Mutation ]
+ *     createQuestion     [ createQuestionInput: CreateQuestionInput => Question ]
+ *                              : 질문 내용 저장 API
+ *     replyQuestion      [ replyQuestionInput: ㄲeplyQuestionInput => Boolean ]
+ *                              : 질문에 대한 답변 메일 전송 API
+ * ======================================================================= */
+
 @Resolver()
 export class QuestionResolver {
   constructor(
@@ -33,7 +51,7 @@ export class QuestionResolver {
 
   @Mutation(() => Boolean)
   async replyQuestion(
-    @Args('createQuestionInput') replyQuestionInput: ReplyQuestionInput,
+    @Args('replyQuestionInput') replyQuestionInput: ReplyQuestionInput,
   ) {
     const title = 'asdasd';
     await this.authService.sendEmail({

@@ -7,6 +7,20 @@ import { Tags } from './entities/tags.entity';
 import { Branch } from '../branch/entities/branch.entity';
 import { FileService } from '../file/file.service';
 
+/* =======================================================================
+ *  TYPE : Service
+ *  Class : RoomService
+ *  UpdatedAt : 2022-07-30
+ *  Description : 방 API에 필요한 각종 함수 설정
+ *  Constructor : Repository<Room, Tags, Branch, Images>, FileService
+ *  Content :
+ *    findAll   [ null => [Room] ] : 방 전체 데이터 조회
+ *    findOne   [ id: String => Room]] : 특정 방 한개 데이터 조회
+ *    create    [ createRoomInput: CreateRoomInput => String ] : 방 데이터 추가
+ *    delete    [ roomId: string => Boolean ] : 특정 방 데이터 삭제
+ *    update    [ roomId: string, updateRoomInput: UpdateRoomInput => Room ]
+ *                    : 특정 방 데이터 수정
+ * ======================================================================= */
 @Injectable()
 export class RoomService {
   constructor(
@@ -24,12 +38,6 @@ export class RoomService {
 
     private readonly fileService: FileService,
   ) {}
-
-  async find() {
-    return await this.roomRepository.find({
-      relations: ['images', 'tags', 'reviews'],
-    });
-  }
 
   async findAll() {
     return await this.roomRepository.find({
@@ -157,8 +165,6 @@ export class RoomService {
       relations: ['room'],
       where: { room: { id: roomId } },
     });
-
-    console.log(tagsResult);
 
     roomResult.images.map(async (el) => {
       await this.imagesRepository.softDelete({

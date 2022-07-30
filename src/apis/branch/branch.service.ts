@@ -21,26 +21,13 @@ export class BranchService {
   ) {}
 
   async find() {
-    /* ===================================================================
-     *  처리 과정
-     *  1. 전체 데이터 조회
-     *  2. 전체 데이터에서 지점별 별점 가장 높은 방 1개 선별
-     * =================================================================== */
-
-    /* ===================================================================
-     * 1. room 전체 데이터 조회
-     * =================================================================== */
     const rooms = await this.roomRepository.find({
       relations: ['images', 'tags', 'reviews', 'branch'],
     });
 
-    /* ===================================================================
-     * 2. 지점별 별점 가장 높은 방 1개 선별
-     * =================================================================== */
     let branch = new Map();
     let result = [];
     rooms.forEach((el) => {
-      //
       if (!branch.has(el.branch.branch)) {
         result.push(el);
         branch.set(el.branch.branch, result.length - 1);
@@ -50,7 +37,6 @@ export class BranchService {
         if (currentStar > saveStar) result[branch.get(el.branch.branch)] = el;
       }
     });
-
     return result;
   }
 }

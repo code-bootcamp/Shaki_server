@@ -10,8 +10,8 @@ import { FileUpload, GraphQLUpload } from 'graphql-upload';
  *  Constructor : FileService
  *  Content :
  *   [ Mutation ]
- *      uploadFile  [ Mutation => String  ] : 이미지 업로드 API
- *      removeFile  [ Mutation => Boolean ] : 이미지 삭제 API
+ *      uploadFile  [ name: string => String  ] : 이미지 업로드 API
+ *      removeFile  [ imageUrl: string => Boolean ] : 이미지 삭제 API
  * ======================================================================= */
 
 @Resolver()

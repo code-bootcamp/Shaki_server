@@ -1,9 +1,22 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { Injectable } from '@nestjs/common';
+import { Review } from './entities/review.entity';
+import { InjectRepository } from '@nestjs/typeorm';
 import { Room } from '../room/entities/room.entity';
 import { User } from '../user/entities/user.entity';
-import { Review } from './entities/review.entity';
+
+/* =======================================================================
+ *  TYPE : Service
+ *  Class : ReivewService
+ *  UpdatedAt : 2022-07-28
+ *  Description : 리뷰 API에 필요한 각종 함수 설정
+ *  Constructor : Repository<Review, Room, User>
+ *  Content :
+ *    create    [ pageNum: number, roomId: string => Boolean ] : 리뷰 저장 함수
+ *    delete    [ reviewId: string => Boolean ] : 리뷰 삭제 함수
+ *    update    [ reviewId: string, star: number, content: string  => Boolean ]
+ *                    : 리뷰 수정 함수
+ * ======================================================================= */
 
 @Injectable()
 export class ReivewService {
