@@ -14,7 +14,6 @@
 
 <h2 style="border-bottom:2px solid gray; margin: 30px 0;">기술 스택</h2>
 
-<div>
 <div 
   style="
     display:flex; 
@@ -198,4 +197,5 @@ f7b3_team04_server
   <li>회원가입 기능 구현</li>
   <li>결제 기능 구현</li>
   <li>이미지 업로드 기능 구현</li>
+  <li>테스트 코드 작성</li>
 </div>
