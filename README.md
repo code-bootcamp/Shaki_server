@@ -14,30 +14,21 @@
 
 <h2 style="border-bottom:2px solid gray; margin: 30px 0;">기술 스택</h2>
 
-<div 
-  style="
-    display:flex; 
-    justify-content: center;
-    margin: 20px 0;
-  "
->
-  <div style="margin: 0 20px">
-    <li>TypeScript</li>
-    <li>NodeJS</li>
-    <li>NestJS</li>
-    <li>GraphQL</li>
-    <li>TypeORM</li>
-    <li>Redis</li>
-  </div>
-  <div style="margin: 0 20px">
-    <li>Mysql</li>
-    <li>Docker</li>
-    <li>Git, Github</li>
-    <li>Kubernetes</li>
-    <li>GCP</li>
-  </div>
-</div>
 <img src="https://storage.googleapis.com/shaki-readme-image/%E1%84%80%E1%85%B5%E1%84%89%E1%85%AE%E1%86%AF%E1%84%89%E1%85%B3%E1%84%90%E1%85%A2%E1%86%A8.jpg">
+</div>
+
+<div style="margin-top: 20px 0">
+  <li>TypeScript</li>
+  <li>NodeJS</li>
+  <li>NestJS</li>
+  <li>GraphQL</li>
+  <li>TypeORM</li>
+  <li>Redis</li>
+  <li>Mysql</li>
+  <li>Docker</li>
+  <li>Git, Github</li>
+  <li>Kubernetes</li>
+  <li>GCP</li>
 </div>
 
 <h2 style="border-bottom:2px solid gray; margin: 30px 0;">Flow Chart</h2>
