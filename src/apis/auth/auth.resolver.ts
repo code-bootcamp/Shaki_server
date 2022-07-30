@@ -1,17 +1,33 @@
-import { Args, Context, Mutation, Resolver } from '@nestjs/graphql';
-import { AuthService } from './auth.service';
-import * as jwt from 'jsonwebtoken';
 import {
-  CACHE_MANAGER,
   Inject,
+  CACHE_MANAGER,
   UnauthorizedException,
   UnprocessableEntityException,
-  UseGuards,
+  InternalServerErrorException,
 } from '@nestjs/common';
-import { UserService } from '../user/user.service';
-import { Cache } from 'cache-manager';
-import * as bcrypt from 'bcrypt';
 import 'dotenv/config';
+import * as bcrypt from 'bcrypt';
+import * as jwt from 'jsonwebtoken';
+import { Cache } from 'cache-manager';
+import { AuthService } from './auth.service';
+import { UserService } from '../user/user.service';
+import { Args, Context, Mutation, Resolver } from '@nestjs/graphql';
+
+/* =======================================================================
+ *  TYPE : Resolver
+ *  Class : AuthResolver
+ *  UpdatedAt : 2022-07-26
+ *  Description : 권한에 대한 API 설정
+ *  Constructor : AuthService, UserService, Cache
+ *  Content :
+ *   [ Mutation ]
+ *     login              [ email: string, pwd: string, context: any => String ]
+ *                          : 로그인 API
+ *
+ *     logout             [ context: any => Boolean ] : 로그아웃 API
+ *     checkEmail         [ email: string => String ] : 회원가입을 위한 이메일 체크
+ *     restoreAccessToken [ context: any => String  ] : AccessToken 재발급
+ * ======================================================================= */
 
 @Resolver()
 export class AuthResolver {
@@ -35,8 +51,17 @@ export class AuthResolver {
     const isAuth = await bcrypt.compare(pwd, user.pwd);
     if (!isAuth) throw new UnprocessableEntityException('암호가 틀렸습니다.');
 
-    await this.authService.getRefreshToKen({ email, res: context.req.res });
-    return await this.authService.getAccessToken({ email });
+    const refreshToken = await this.authService.getRefreshToKen({
+      email,
+      res: context.req.res,
+      req: context.req,
+    });
+
+    if (refreshToken) {
+      return await this.authService.getAccessToken({ email });
+    } else {
+      throw new InternalServerErrorException('refresh 토큰 발급 실패');
+    }
   }
 
   @Mutation(() => Boolean)
@@ -60,22 +85,30 @@ export class AuthResolver {
       await this.cacheManager.set(refreshToken, 'refreshToken', {
         ttl: myRefresh['exp'] - myRefresh['iat'],
       });
+
+      return true;
     } catch {
       throw new UnauthorizedException();
     }
-    return true;
   }
 
-  @Mutation(() => Number)
+  @Mutation(() => String)
   async checkEmail(@Args('email') email: string) {
-    const title = 'Shaki 인증번호';
-    const content = this.authService.getAuthNum();
-    return await this.authService.sendEmail({
-      title,
-      email,
-      content,
-      replyContent: null,
-    });
+    const check = await this.userService.findOne({ email });
+    if (!check) {
+      const title = 'Shaki 인증번호';
+      const content = this.authService.getAuthNum();
+      const result = await this.authService.sendEmail({
+        title,
+        email,
+        content,
+        replyContent: null,
+      });
+
+      return result;
+    } else {
+      throw new InternalServerErrorException('이미 등록된 이메일입니다.');
+    }
   }
 
   @Mutation(() => String)

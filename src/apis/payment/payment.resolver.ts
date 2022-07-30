@@ -1,10 +1,30 @@
-import { UnauthorizedException } from '@nestjs/common';
-import { Args, Context, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { CreatePaymentInput } from './dto/createPayment.input';
-import { Payment } from './entities/payment.entity';
 import { PaymentService } from './payment.service';
-import * as jwt from 'jsonwebtoken';
 import { AuthService } from '../auth/auth.service';
+import { Payment } from './entities/payment.entity';
+import { CreatePaymentInput } from './dto/createPayment.input';
+import { Args, Context, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
+
+/* =======================================================================
+ *  TYPE : Resolver
+ *  Class : PaymentResolver
+ *  UpdatedAt : 2022-07-28
+ *  Description : 결제에 대한 API 설정
+ *  Constructor : PaymentService, AuthService
+ *  Content :
+ *   [ Query ]
+ *     fetchPayments      [ null => [Payment] ] : 결제내역 전체 조회
+ *     fetchPayment       [ email: string => Payment ] : 특정 결제내역 1개 조회
+ *     fetchReservation   [ email: string, date: string => [String] ]
+ *                            : 회원가입을 위한 이메일 체크
+ *     fetchPaymentSum    [ null => Int  ] : AccessToken 재발급
+ *
+ *   [ Mutation ]
+ *     createPayment      [ createPaymentInput: CreatePaymentInput => Payment ]
+ *                            : 결제내역 데이터 저장
+ *
+ *     cancelPayment      [ impUid: string => Boolean ] : 결제 환불 API
+ * ======================================================================= */
+
 @Resolver()
 export class PaymentResolver {
   constructor(

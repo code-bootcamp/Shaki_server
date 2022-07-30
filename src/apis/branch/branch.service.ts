@@ -3,6 +3,16 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Room } from '../room/entities/room.entity';
 
+/* =======================================================================
+ *  TYPE : Service
+ *  Class : BranchService
+ *  UpdatedAt : 2022-07-25
+ *  Description : 지점 API에 필요한 각종 함수 설정
+ *  Constructor : Repository<Room>
+ *  Content :
+ *    find [ null => [Room] ] : 지점별 별점 가장 높은 방 1개 조회
+ * ======================================================================= */
+
 @Injectable()
 export class BranchService {
   constructor(
@@ -27,7 +37,6 @@ export class BranchService {
         if (currentStar > saveStar) result[branch.get(el.branch.branch)] = el;
       }
     });
-
     return result;
   }
 }

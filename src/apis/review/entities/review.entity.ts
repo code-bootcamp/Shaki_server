@@ -10,6 +10,16 @@ import {
   ManyToOne,
 } from 'typeorm';
 
+/* =======================================================================
+ *  TYPE : Entity
+ *  Class : Review
+ *  UpdatedAt : 2022-07-30
+ *  Description : 질문에 대한 데이터를 저장하기 위한 entity
+ *  Content :
+ *    [ Column && Field ] : id, content, star, createAt, deletedAt
+ *                          room, user
+ * ======================================================================= */
+
 @Entity()
 @ObjectType()
 export class Review {
