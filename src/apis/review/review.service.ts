@@ -30,6 +30,7 @@ export class ReivewService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
   ) {}
+
   async find({ pageNum, roomId }) {
     let skip = 0;
     if (skip !== 1) skip = (pageNum - 1) * 10;
