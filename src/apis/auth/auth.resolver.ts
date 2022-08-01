@@ -16,7 +16,7 @@ import { Args, Context, Mutation, Resolver } from '@nestjs/graphql';
 /* =======================================================================
  *  TYPE : Resolver
  *  Class : AuthResolver
- *  UpdatedAt : 2022-07-26
+ *  UpdatedAt : 2022-08-01
  *  Description : 권한에 대한 API 설정
  *  Constructor : AuthService, UserService, Cache
  *  Content :

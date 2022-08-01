@@ -9,7 +9,7 @@ import { Args, Context, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 /* =======================================================================
  *  TYPE : Resolver
  *  Class : UserResolver
- *  UpdatedAt : 2022-07-30
+ *  UpdatedAt : 2022-08-01
  *  Description : 유저 정보에 대한 API 설정
  *  Constructor : UserService, AuthService
  *  Content :

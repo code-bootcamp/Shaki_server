@@ -17,7 +17,7 @@ import { User } from '../user/entities/user.entity';
 /* =======================================================================
  *  TYPE : Service
  *  Class : AuthService
- *  UpdatedAt : 2022-07-26
+ *  UpdatedAt : 2022-08-01
  *  Description : 권한 API에 필요한 각종 함수 설정
  *  Constructor : Repository<User>, JwtService, UserService, Cache
  *  Content :
