@@ -96,7 +96,7 @@ export class AuthResolver {
   async checkEmail(@Args('email') email: string) {
     const check = await this.userService.findOne({ email });
     if (!check) {
-      const title = 'Shaki 인증번호';
+      const title = '[Shaki] 인증번호 안내입니다.';
       const content = this.authService.getAuthNum();
       const result = await this.authService.sendEmail({
         title,

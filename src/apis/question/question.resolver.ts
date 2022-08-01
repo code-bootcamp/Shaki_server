@@ -53,7 +53,7 @@ export class QuestionResolver {
   async replyQuestion(
     @Args('replyQuestionInput') replyQuestionInput: ReplyQuestionInput,
   ) {
-    const title = 'asdasd';
+    const title = '[Shaki] 1:1문의 답변사항입니다.';
     await this.authService.sendEmail({
       title,
       email: replyQuestionInput.email,

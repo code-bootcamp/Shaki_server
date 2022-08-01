@@ -135,7 +135,30 @@ export class AuthService {
           from: EMAIL_SENDER,
           to: email,
           subject: title,
-          html: content,
+          html: `
+            <div style="width: 1400px; font-size: 15px; display: flex; margin-top: 30px" >
+              <img
+                src="https://storage.googleapis.com/front_image/shakiRight.png"
+                style="width: 10%; height: 100%"
+              />
+              <div style="width 90%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: start; margin-top: 20px; margin-left: 100px">
+                <div style="display: flex; flex-direction: column; align-items: center; ">
+                </div>
+                <h1 style="border-bottom: 2px solid gray; margin: 20px 0">${title}</h1>
+                <div style="font-size: 16px;">안녕하세요 :)</div>
+                <div style="border-bottom: 2px solid blue; display: flex; margin: 20px 0; padding-bottom: 20px">
+                  <p style="color: blue; font-size: 16px;">쉐이키입니다. &nbsp;</p>
+                  <p style="font-size: 16px;">아래와 같이 ${
+                    title.split(' ')[1]
+                  }를 보내드립니다.</p>
+                </div>
+                <b style="font-size: 18px; margin: 20px 0;">발신인 : (주) Shaki</b>
+                <div style="font-size: 18px;">${
+                  title.split(' ')[1]
+                } : ${content}</div>
+              </div>
+            </div>
+          `,
         });
       } else {
         await transporter.sendMail({
@@ -143,13 +166,28 @@ export class AuthService {
           to: email,
           subject: title,
           html: `
-          ${content}
-          ---------------------------
-          ${replyContent}
+            <div style="width: 1400px; font-size: 15px; display: flex; margin-top: 30px" >
+              <img
+                src="https://storage.googleapis.com/front_image/shakiRight.png"
+                style="width: 10%; height: 100%"
+              />
+              <div style="width 90%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: start; margin-top: 20px; margin-left: 100px">
+                <div style="display: flex; flex-direction: column; align-items: center; ">
+                </div>
+                <h1 style="border-bottom: 2px solid gray; margin: 20px 0">[Shaki] 1:1문의 답변사항입니다.</h1>
+                <div style="font-size: 16px;">안녕하세요 :)</div>
+                <div style="border-bottom: 2px solid blue; display: flex; margin: 20px 0; padding-bottom: 20px">
+                  <p style="color: blue; font-size: 16px;">쉐이키입니다. &nbsp;</p>
+                  <p style="font-size: 16px;">고객님의 1:1 문의사항에 대해 아래와같이 답변드립니다.</p>
+                </div>
+                <div>${content}</div>
+                <div style="border: 1px solid gray; margin: 10px 0; width: 100%"></div>
+                <div>${replyContent}</div>
+              </div>
+            </div>
           `,
         });
       }
-
       return content;
     } catch {
       return '이메일 확인에 실패했습니다.';

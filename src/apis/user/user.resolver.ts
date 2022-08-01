@@ -93,7 +93,7 @@ export class UserResolver {
   ) {
     const content = await this.userService.findPwd({ email, name, phone_num });
     if (content) {
-      const title = 'Shaki 임시 비밀번호';
+      const title = '[Shaki] 임시비밀번호 안내입니다.';
       const result = await this.authService.sendEmail({
         title,
         content,
