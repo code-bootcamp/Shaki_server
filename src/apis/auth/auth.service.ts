@@ -17,7 +17,7 @@ import { User } from '../user/entities/user.entity';
 /* =======================================================================
  *  TYPE : Service
  *  Class : AuthService
- *  UpdatedAt : 2022-08-01
+ *  UpdatedAt : 2022-08-02
  *  Description : 권한 API에 필요한 각종 함수 설정
  *  Constructor : Repository<User>, JwtService, UserService, Cache
  *  Content :
@@ -72,8 +72,7 @@ export class AuthService {
         { secret: process.env.REFRESH_KEY, expiresIn: '2w' },
       );
 
-      // res.cookie('refreshToken', refreshToken);
-      const allowedOrigins = ['https://sha-ki.shop', 'http://localhost:3000'];
+      const allowedOrigins = ['https://sha-ki.shop/', 'http://localhost:3000/'];
       const origin = req.headers.origin;
       if (allowedOrigins.includes(origin)) {
         res.setHeader('Access-Control-Allow-Origin', origin);
@@ -85,7 +84,7 @@ export class AuthService {
         'GET,HEAD,OPTIONS,POST,PUT',
       );
       res.setHeader(
-        'Access-Control-Allow-Headers',
+        'Access-Control-Allow-Header',
         'Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers',
       );
 

@@ -176,7 +176,7 @@ f7b3_team04_server
 <div>
   <li>Git 관리</li>
   <li>ERD 설계 및 API DOCS 작업</li>
-  <li>Backend 서버 배포</li>
+  <li>Backend CI/CD 배포</li>
   <li>예약, 리뷰 및 문의 기능 구현</li>
   <li>테스트 코드 작성</li>
 </div>
