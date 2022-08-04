@@ -26,7 +26,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
     }),
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: '10.35.240.3',
+      host: '10.38.144.3',
       port: 3306,
       username: 'root',
       password: 'root',
@@ -37,7 +37,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
     }),
     CacheModule.register<RedisClientOptions>({
       store: redisStore,
-      url: 'redis://10.35.241.3:6379',
+      url: 'redis://10.38.145.4:6379',
       isGlobal: true,
     }),
     QuestionModule,
