@@ -8,7 +8,7 @@ import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 /* =======================================================================
  *  TYPE : Service
  *  Class : UserService
- *  UpdatedAt : 2022-07-31
+ *  UpdatedAt : 2022-08-08
  *  Description : 방 API에 필요한 각종 함수 설정
  *  Constructor : Repository<User, Room>
  *  Content :
@@ -37,11 +37,15 @@ export class UserService {
   ) {}
 
   async findOne({ email }) {
-    const result = await this.userRepository.findOne({
+    return await this.userRepository.findOne({
       where: { email },
       relations: ['room.images', 'payment.room.images', 'review'],
+      order: {
+        payment: {
+          createdAt: 'DESC',
+        },
+      },
     });
-    return result;
   }
 
   async findPwd({ email, phone_num, name }) {
